@@ -1,0 +1,63 @@
+@font-face {
+    font-family:rockstar;
+    font-display:swap;
+    src:url('../../app/fonts/rockstar/Rockstar-Regular.otf') format("opentype");
+    font-weight:400;
+    font-style:normal
+}
+@font-face {
+    font-family:graphik;
+    font-display:swap;
+    src:url('../../app/fonts/graphik/Graphik-Regular.otf') format("opentype");
+    font-weight:400;
+    font-style:normal
+}
+@font-face {
+    font-family:graphik;
+    font-display:swap;
+    src:url('../../app/fonts/graphik/Graphik-Semibold.otf') format("opentype");
+    font-weight:600;
+    font-style:normal
+}
+@font-face {
+    font-family:graphik;
+    font-display:swap;
+    src:url('../../app/fonts/graphik/Graphik-Medium.otf') format("opentype");
+    font-weight:500;
+    font-style:normal
+}
+@font-face {
+    font-family:canela;
+    font-display:swap;
+    src:url('../../app/fonts/canela/Canela-Regular.otf') format("opentype");
+    font-weight:400;
+    font-style:normal
+}
+@font-face {
+    font-family:canela;
+    font-display:swap;
+    src:url('../../app/fonts/canela/Canela-Medium.otf') format("opentype");
+    font-weight:500;
+    font-style:normal
+}
+@font-face {
+    font-family:canela;
+    font-display:swap;
+    src:url('../../app/fonts/canela/Canela-Bold.otf') format("opentype");
+    font-weight:700;
+    font-style:normal
+}
+@font-face {
+    font-family:fontello;
+    font-display:swap;
+    src: url('../../app/fonts/fontello/fontello.ttf') format('truetype');
+    font-weight:400;
+    font-style:normal 
+}
+html, body {
+    overflow-x: hidden;
+}
+body {
+  font-family: Graphik;    
+  color: #333333; 
+}
