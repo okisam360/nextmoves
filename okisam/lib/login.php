@@ -29,7 +29,6 @@ function my_custom_login_page_css() {
       margin-top: 90px;
     }</style>";
   echo '
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
       $(function(){
         $("#user_login").prop("type", "email");
@@ -273,3 +272,8 @@ function custom_login_title( $login_title ) {
 return str_replace(array( ' &lsaquo;', ' &#8212; WordPress'), array( ' ', ' '),$login_title );
 }
 add_filter( 'login_title', 'custom_login_title' );
+
+function okisam_enqueue_login_assets() {
+  wp_enqueue_script('jquery');
+}
+add_action('login_enqueue_scripts', 'okisam_enqueue_login_assets');
