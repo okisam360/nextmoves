@@ -4,11 +4,9 @@
 	* Template Name: Home
 	*/
 
-?>  
+?>
 <div class="box mx-a mt-25 px-15 py-25">
-	<div class="d-f fxww">
-		<div class="col-12 p-45 ta-c">
-			Página de Inicio
-		</div>
-	</div>
+	<?php get_template_part('templates/parts/header-panel'); ?>
+    <?php get_template_part('templates/parts/q1'); ?>
+    <?php get_template_part('templates/parts/q2'); ?>
 </div>
