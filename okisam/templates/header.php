@@ -1,7 +1,7 @@
 <header class="hero-header ta-c">
 	<div class="box mx-a px-15">
 		<h1 class="h1-semibold c-white mb-30">¡Bienvenidx a nuestro Tablero de Marketing Industrial!</h1>
-		<p class="h3-regular c-white mb-45 mx-a" style="max-width: 1482px; opacity: 0.9; line-height: 1.5;">
+		<p class="h3-regular c-white mb-45 mx-a" style="opacity: 0.9; line-height: 1.5;">
 			Un informe vivo de 12 entregas quincenales en el que, como cada año, te mostramos como está la foto del sector industrial en cuanto a comunicación y marketing digital se refiere.
 		</p>
 
