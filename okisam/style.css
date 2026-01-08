@@ -7,3 +7,81 @@ Author URI:         https://okisam.com
 Text Domain:        okisam
 License:            MIT License
 License URI:        http://opensource.org/licenses/MIT */
+
+/* Header / Hero Styles */
+.hero-header {
+    background-color: #121415;
+    padding: 100px 0;
+    color: #ffffff;
+}
+
+.c-white {
+    color: #ffffff;
+}
+
+.c-orange {
+    color: #FF5C39;
+}
+
+.btn-orange {
+    background-color: #FF5C39;
+    color: #ffffff;
+    padding: 15px 40px;
+    border-radius: 50px;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-orange:hover {
+    background-color: #E04B2A;
+    color: #ffffff;
+}
+
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.countdown-item {
+    text-align: center;
+    min-width: 60px;
+}
+
+.countdown-number {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1;
+    display: block;
+    color: #FF5C39;
+}
+
+.countdown-label {
+    font-size: 14px;
+    text-transform: capitalize;
+    color: #FF5C39;
+    margin-top: 8px;
+    display: block;
+    font-weight: 400;
+}
+
+.countdown-separator {
+    font-size: 48px;
+    font-weight: 700;
+    color: #FF5C39;
+    line-height: 1.2;
+    padding-top: 5px;
+}
+
+
+@media (max-width: 768px) {
+    .hero-header {
+        padding: 60px 0;
+    }
+    .countdown-number, .countdown-separator {
+        font-size: 32px;
+    }
+}
