@@ -54,6 +54,31 @@
     font-weight:400;
     font-style:normal 
 }
+
+:root {
+  /* Brand colors (PROJECT_RULES) */
+  --neutral-95: #171A1C;
+  --brand-color: #EF5A35;
+  --neutral-00: #FFFFFF;
+  --neutral-70: #6E7B86;
+  --cta-default: #EF5A35;
+}
+/* === COLORS DE PROYECTO === */
+.text-neutral-95 { color: var(--neutral-95); }
+.bg-neutral-95 { background-color: var(--neutral-95); }
+
+.text-brand { color: var(--brand-color); }
+.bg-brand { background-color: var(--brand-color); }
+
+.text-neutral-00 { color: var(--neutral-00); }
+.bg-neutral-00 { background-color: var(--neutral-00); }
+
+.text-neutral-70 { color: var(--neutral-70); }
+.bg-neutral-70 { background-color: var(--neutral-70); }
+
+.text-cta { color: var(--cta-default); }
+.bg-cta { background-color: var(--cta-default); }
+
 html, body {
     overflow-x: hidden;
 }
@@ -244,23 +269,12 @@ body {
 }
 
 .countdown-number {
-  font-family:'Graphik',sans-serif;
-  font-weight:700;
-  font-size:30px;
-  line-height:140%;
-  letter-spacing:0.005em;
-  color:var(--brand-color,#EF5A35);
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
 .countdown-label {
-  font-family:'Graphik',sans-serif;
-  font-weight:400;
-  font-size:14px;
-  line-height:100%;
-  color:var(--brand-color,#EF5A35);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -268,11 +282,6 @@ body {
 }
 
 .countdown-separator {
-  font-family:'Graphik',sans-serif;
-  font-weight:400;
-  font-size:24px;
-  line-height:130%;
-  color:var(--brand-color,#EF5A35);
   display:flex;
   align-items:center;
   justify-content:center;

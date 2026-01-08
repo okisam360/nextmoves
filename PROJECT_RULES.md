@@ -9,7 +9,7 @@
 - Neutral/Neutral-70: #6E7B86
 - CTA-Default: #EF5A35
 
-Se recomienda usar variables CSS en los archivos de estilos principales para mantener consistencia visual y facilitar el mantenimiento.
+Se recomienda usar variables CSS en los archivos de estilos principales  [okisam/app/styles/style.css](okisam/app/styles/style.css) para mantener consistencia visual y facilitar el mantenimiento.
 
 ### Tipografías
 
