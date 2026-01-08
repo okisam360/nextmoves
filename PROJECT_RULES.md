@@ -1,5 +1,91 @@
 # PROJECT RULES — NextMove
 
+## Reglas de Estilo y Colores
+
+### Colores de Marca
+- Neutral/Neutral-95: #171A1C
+- Brand/Color: #EF5A35
+- Neutral/Neutral-00: #FFFFFF
+- Neutral/Neutral-70: #6E7B86
+- CTA-Default: #EF5A35
+
+Se recomienda usar variables CSS en los archivos de estilos principales para mantener consistencia visual y facilitar el mantenimiento.
+
+### Tipografías
+
+- **H1-Semibold**
+  - font-family: Graphik;
+  - font-weight: 600;
+  - font-size: 40px;
+  - line-height: 110%;
+  - letter-spacing: 0px;
+  - text-align: center;
+- **H2-Regular**
+  - font-family: Graphik;
+  - font-weight: 400;
+  - font-size: 30px;
+  - line-height: 140%;
+  - letter-spacing: 0.5%;
+- **H2-Bold**
+  - font-family: Graphik;
+  - font-weight: 700;
+  - font-size: 30px;
+  - line-height: 140%;
+  - letter-spacing: 0.5%;
+- **H3-Regular**
+  - font-family: Graphik;
+  - font-weight: 400;
+  - font-size: 24px;
+  - line-height: 130%;
+  - letter-spacing: 0px;
+  - text-align: center;
+- **H4-Regular**
+  - font-family: Graphik;
+  - font-weight: 400;
+  - font-size: 20px;
+  - line-height: 130%;
+  - letter-spacing: 0px;
+- **Display XXL-Bold**
+  - font-family: Graphik;
+  - font-weight: 700;
+  - font-size: 96px;
+  - line-height: 110%;
+  - letter-spacing: 0px;
+  - text-align: right;
+- **Display XL-Black**
+  - font-family: Graphik;
+  - font-weight: 900;
+  - font-size: 52px;
+  - line-height: 110%;
+  - letter-spacing: 0px;
+- **Body-L-Semibold**
+  - font-family: Graphik;
+  - font-weight: 600;
+  - font-size: 18px;
+  - line-height: 150%;
+  - letter-spacing: 0.6px;
+- **Body L-Regular**
+  - font-family: Graphik;
+  - font-weight: 400;
+  - font-size: 18px;
+  - line-height: 150%;
+  - letter-spacing: 0.6px;
+- **Body L-Underlined**
+  - font-family: Graphik;
+  - font-weight: 600;
+  - font-size: 18px;
+  - line-height: 150%;
+  - letter-spacing: 0.55px;
+  - text-align: right;
+  - text-decoration: underline;
+- **Body S-Regular**
+  - font-family: Graphik;
+  - font-weight: 400;
+  - font-size: 14px;
+  - line-height: 100%;
+  - letter-spacing: 0%;
+  - vertical-align: middle;
+
 Resumen ejecutivo
 - Objetivo: Unificar reglas y convenciones para la implementación ACF del CPT `panel`, basadas en los planes en `Plans/`.
 - Ámbito: Estructura de campos para Q1 y Q2, tipos de módulo, `unlock_date`, convenciones de slugs y prácticas de UI para Marketing y Frontend.
