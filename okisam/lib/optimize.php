@@ -171,7 +171,7 @@ function ddw_filter_autoptimize_path_call($content){
   ob_start('ddw_filter_autoptimize_path');
 }
 if ( !is_admin() ) {
-  if ( !( defined( 'WP_CLI' ) ) ) { add_action( 'init', 'ddw_filter_autoptimize_path_call', 1 ); }
+  //  if ( !( defined( 'WP_CLI' ) ) ) { add_action( 'init', 'ddw_filter_autoptimize_path_call', 1 ); }
 }
 add_filter( 'wp_get_attachment_image_src', 'filter_wp_get_attachment_image_src', 10, 4 ); 
 function filter_wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) { 
