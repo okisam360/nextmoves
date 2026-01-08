@@ -2,14 +2,9 @@
 
 ## Reglas de Estilo y Colores
 
-### Colores de Marca
-- Neutral/Neutral-95: #171A1C
-- Brand/Color: #EF5A35
-- Neutral/Neutral-00: #FFFFFF
-- Neutral/Neutral-70: #6E7B86
-- CTA-Default: #EF5A35
+Los colores de la marca y sus variables CSS ahora se documentan en `docs/COLOR.md`. Ver: [docs/COLOR.md](docs/COLOR.md)
 
-Se recomienda usar variables CSS en los archivos de estilos principales  [okisam/app/styles/style.css](okisam/app/styles/style.css) para mantener consistencia visual y facilitar el mantenimiento.
+Se recomienda usar las variables CSS definidas en `okisam/app/styles/style.css` y las clases utilitarias listadas en `docs/COLOR.md` para mantener consistencia visual y facilitar el mantenimiento.
 
 ### Tipografías
 

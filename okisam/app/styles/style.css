@@ -56,12 +56,16 @@
 }
 
 :root {
-  /* Brand colors (PROJECT_RULES) */
+  /* Brand colors (see docs/COLOR.md) */
   --neutral-95: #171A1C;
   --brand-color: #EF5A35;
   --neutral-00: #FFFFFF;
+  --neutral-20: #D5D9DD;
   --neutral-70: #6E7B86;
   --cta-default: #EF5A35;
+  --neutral-90: #394046;
+  --okisam-gris: #3F3F3F;
+  --okisam-rojo: #E74A48;
 }
 /* === COLORS DE PROYECTO === */
 .text-neutral-95 { color: var(--neutral-95); }
@@ -76,8 +80,30 @@
 .text-neutral-70 { color: var(--neutral-70); }
 .bg-neutral-70 { background-color: var(--neutral-70); }
 
+.text-neutral-20 { color: var(--neutral-20); }
+.bg-neutral-20 { background-color: var(--neutral-20); }
+
+.text-neutral-90 { color: var(--neutral-90); }
+.bg-neutral-90 { background-color: var(--neutral-90); }
+
+.text-okisam-gris { color: var(--okisam-gris); }
+.bg-okisam-gris { background-color: var(--okisam-gris); }
+
+.text-okisam-rojo { color: var(--okisam-rojo); }
+.bg-okisam-rojo { background-color: var(--okisam-rojo); }
+
 .text-cta { color: var(--cta-default); }
 .bg-cta { background-color: var(--cta-default); }
+
+/* Border utilities */
+.border-neutral-95 { border-color: var(--neutral-95); }
+.border-brand { border-color: var(--brand-color); }
+.border-neutral-00 { border-color: var(--neutral-00); }
+.border-neutral-70 { border-color: var(--neutral-70); }
+.border-neutral-20 { border-color: var(--neutral-20); }
+.border-neutral-90 { border-color: var(--neutral-90); }
+.border-okisam-gris { border-color: var(--okisam-gris); }
+.border-okisam-rojo { border-color: var(--okisam-rojo); }
 
 html, body {
     overflow-x: hidden;
@@ -309,6 +335,29 @@ body {
 }
 
 .btn-orange:hover{background:#E04B2A !important; color:var(--neutral-00,#FFFFFF) !important}
+
+/* Semantic CTA alias */
+.btn-cta {
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  background:var(--cta-default,#EF5A35) !important;
+  color:var(--neutral-95,#171A1C) !important;
+  font-family:'Graphik',sans-serif !important;
+  font-weight:600 !important;
+  font-size:18px !important;
+  line-height:150% !important;
+  letter-spacing:0.6px !important;
+  border-radius:40px !important;
+  padding:12px 24px !important;
+  min-width:173px !important;
+  min-height:51px !important;
+  text-align:center !important;
+  margin-top:18px !important;
+  box-shadow:none !important;
+  border:none !important;
+}
+.btn-cta:hover{background:#E04B2A !important; color:var(--neutral-00,#FFFFFF) !important}
 
 @media (max-width: 768px){
   .hero-header{min-height:320px;padding:24px 0}
