@@ -1,0 +1,36 @@
+<?php
+/**
+ * Module: Video Sumario
+ * Displays a summary video module
+ */
+
+$title = isset($module['video_sumario_title']) ? $module['video_sumario_title'] : '';
+$url = isset($module['video_sumario_url']) ? $module['video_sumario_url'] : '';
+$thumb = isset($module['video_sumario_thumb']) ? $module['video_sumario_thumb'] : '';
+$desc = isset($module['video_sumario_desc']) ? $module['video_sumario_desc'] : '';
+$size = isset($module['video_sumario_size']) ? $module['video_sumario_size'] : 'medium';
+
+$thumb_url = is_array($thumb) ? $thumb['url'] : $thumb;
+?>
+
+<div class="module module-video-sumario module-size-<?php echo esc_attr($size); ?>">
+	<?php if ($thumb_url): ?>
+		<div class="module-thumbnail" style="background-image: url('<?php echo esc_url($thumb_url); ?>');">
+			<?php if ($url): ?>
+				<a href="<?php echo esc_url($url); ?>" class="video-play-link" target="_blank" rel="noopener">
+					<span class="play-icon">▶</span>
+				</a>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+	
+	<div class="module-content">
+		<?php if ($title): ?>
+			<h3 class="module-title"><?php echo esc_html($title); ?></h3>
+		<?php endif; ?>
+		
+		<?php if ($desc): ?>
+			<p class="module-description"><?php echo esc_html($desc); ?></p>
+		<?php endif; ?>
+	</div>
+</div>
