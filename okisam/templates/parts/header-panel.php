@@ -11,7 +11,7 @@ $video_bg = $theme_uri . '/app/images/tmp/95044467b2e4e5101cfa5e345d4455db038654
 $video_play = $theme_uri . '/app/icons/video-play.svg';
 ?>
 
-<div class="panel-header ">
+<div class="panel-header">
 	<div class="panel-top bg-brand">
 		<div class="panel-band text-neutral-00 bg-neutral-95"> 
 			<div class="panel-band-content">
