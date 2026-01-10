@@ -194,22 +194,29 @@ function okisam_is_final_phase() {
 }
 
 /**
+ * Check if a date field has been reached
+ * @param string $date_string The date to check
+ * @return bool True if the date has been reached
+ */
+function okisam_check_unlock_date($date_string) {
+    if (!$date_string) {
+        return false;
+    }
+
+    $current_date = current_time('Y-m-d');
+    $unlock_date = date('Y-m-d', strtotime($date_string));
+
+    return $current_date >= $unlock_date;
+}
+
+/**
  * Check if a panel should be active based on dates
  * @param int $panel_id The panel ID to check
  * @return bool True if the panel should be active
  */
 function okisam_should_panel_be_active($panel_id) {
     $q1_unlock_date = get_field('panel_q1_unlock_date', $panel_id);
-    
-    if (!$q1_unlock_date) {
-        return false;
-    }
-
-    $current_date = current_time('Y-m-d');
-    $q1_date = date('Y-m-d', strtotime($q1_unlock_date));
-
-    // Panel should be active if Q1 unlock date has passed
-    return $current_date >= $q1_date;
+    return okisam_check_unlock_date($q1_unlock_date);
 }
 
 /**
@@ -219,15 +226,7 @@ function okisam_should_panel_be_active($panel_id) {
  */
 function okisam_should_q1_be_unlocked($panel_id) {
     $q1_unlock_date = get_field('panel_q1_unlock_date', $panel_id);
-    
-    if (!$q1_unlock_date) {
-        return false;
-    }
-
-    $current_date = current_time('Y-m-d');
-    $q1_date = date('Y-m-d', strtotime($q1_unlock_date));
-
-    return $current_date >= $q1_date;
+    return okisam_check_unlock_date($q1_unlock_date);
 }
 
 /**
@@ -237,15 +236,7 @@ function okisam_should_q1_be_unlocked($panel_id) {
  */
 function okisam_should_q2_be_unlocked($panel_id) {
     $q2_unlock_date = get_field('panel_q2_unlock_date', $panel_id);
-    
-    if (!$q2_unlock_date) {
-        return false;
-    }
-
-    $current_date = current_time('Y-m-d');
-    $q2_date = date('Y-m-d', strtotime($q2_unlock_date));
-
-    return $current_date >= $q2_date;
+    return okisam_check_unlock_date($q2_unlock_date);
 }
 
 /**
@@ -259,30 +250,27 @@ function okisam_update_panel_statuses() {
     }
 
     $panels = okisam_get_all_panels();
-    $active_panel_found = false;
-    $previous_active_id = null;
-
+    
+    // First pass: find which panel should be active
+    $panel_to_activate = null;
     foreach ($panels as $panel) {
-        $should_be_active = okisam_should_panel_be_active($panel->ID);
+        if (okisam_should_panel_be_active($panel->ID)) {
+            $panel_to_activate = $panel;
+            // Continue to find the latest panel that should be active
+        }
+    }
+    
+    // Second pass: update statuses
+    foreach ($panels as $panel) {
         $current_status = get_field('panel_status', $panel->ID);
-
-        if ($should_be_active && !$active_panel_found) {
-            // This panel should be active
+        
+        if ($panel_to_activate && $panel->ID === $panel_to_activate->ID) {
+            // This is the panel that should be active
             if ($current_status !== 'activo') {
-                // Deactivate the previous active panel
-                if ($previous_active_id) {
-                    update_field('panel_status', 'oculto', $previous_active_id);
-                }
-                
-                // Activate this panel
                 update_field('panel_status', 'activo', $panel->ID);
             }
-            $active_panel_found = true;
         } else {
-            // This panel should be hidden
-            if ($current_status === 'activo') {
-                $previous_active_id = $panel->ID;
-            }
+            // All other panels should be hidden
             if ($current_status !== 'oculto') {
                 update_field('panel_status', 'oculto', $panel->ID);
             }
@@ -306,7 +294,7 @@ add_action('wp', 'okisam_schedule_panel_status_update');
 add_action('okisam_daily_panel_status_update', 'okisam_update_panel_statuses');
 
 /**
- * Clear the cron job on theme deactivation
+ * Clear the cron job on theme switch
  */
 function okisam_clear_panel_status_cron() {
     $timestamp = wp_next_scheduled('okisam_daily_panel_status_update');
@@ -314,4 +302,4 @@ function okisam_clear_panel_status_cron() {
         wp_unschedule_event($timestamp, 'okisam_daily_panel_status_update');
     }
 }
-register_deactivation_hook(__FILE__, 'okisam_clear_panel_status_cron');
+add_action('switch_theme', 'okisam_clear_panel_status_cron');
