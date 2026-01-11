@@ -16,20 +16,38 @@ if (!$panel_id) {
 	return;
 }
 
-// Check if Q1 should be displayed
-if (!okisam_should_q1_be_unlocked($panel_id)) {
-	return;
-}
+// Check if Q1 should be unlocked
+$is_q1_unlocked = okisam_should_q1_be_unlocked($panel_id);
 
 // Get Q1 flexible content
 $q1_modules = get_field('panel_q1', $panel_id);
 
-if ($q1_modules && is_array($q1_modules) && count($q1_modules) > 0) {
-	?>
-	<div class="p-20 q1-container">
-		<h2>Q1 - Primera Quincena</h2>
-		<div class="modules-grid">
-			<?php
+// Edge case: If Q1 is unlocked but has no cards, don't show anything (maintain previous panel)
+if ($is_q1_unlocked && (!$q1_modules || !is_array($q1_modules) || count($q1_modules) === 0)) {
+	return;
+}
+
+// Determine container class based on lock status
+$container_class = $is_q1_unlocked ? 'q1-container' : 'q1-container locked';
+
+// Get unlock date for locked message
+$q1_unlock_date = get_field('panel_q1_unlock_date', $panel_id);
+$unlock_date_formatted = $q1_unlock_date ? date_i18n('j \d\e F, Y', strtotime($q1_unlock_date)) : 'próximamente';
+?>
+
+<div class="p-20 <?php echo esc_attr($container_class); ?>">
+	<h2>Q1 - Primera Quincena</h2>
+	
+	<?php if (!$is_q1_unlocked): ?>
+		<div class="locked-message">
+			<h3>🔒 Contenido Bloqueado</h3>
+			<p>Esta quincena se desbloqueará el <?php echo esc_html($unlock_date_formatted); ?></p>
+		</div>
+	<?php endif; ?>
+	
+	<div class="modules-grid">
+		<?php
+		if ($q1_modules && is_array($q1_modules)) {
 			foreach ($q1_modules as $module) {
 				$layout = $module['acf_fc_layout'];
 				
@@ -44,8 +62,7 @@ if ($q1_modules && is_array($q1_modules) && count($q1_modules) > 0) {
 					echo '</div>';
 				}
 			}
-			?>
-		</div>
+		}
+		?>
 	</div>
-	<?php
-}
+</div>
