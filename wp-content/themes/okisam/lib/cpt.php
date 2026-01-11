@@ -3,43 +3,6 @@
  * Custom Post Types Registration
  */
 
-// Register Panel CPT
-function okisam_register_panel_cpt() {
-    $labels = array(
-        'name'               => 'Paneles',
-        'singular_name'      => 'Panel',
-        'menu_name'          => 'Paneles',
-        'add_new'            => 'Añadir Panel',
-        'add_new_item'       => 'Añadir nuevo Panel',
-        'edit_item'          => 'Editar Panel',
-        'new_item'           => 'Nuevo Panel',
-        'view_item'          => 'Ver Panel',
-        'search_items'       => 'Buscar Paneles',
-        'not_found'          => 'No se encontraron paneles',
-        'not_found_in_trash' => 'No se encontraron paneles en la papelera',
-        'all_items'          => 'Todos los Paneles'
-    );
-
-    $args = array(
-        'labels'              => $labels,
-        'public'              => true,
-        'has_archive'         => true,
-        'publicly_queryable'  => true,
-        'show_ui'             => true,
-        'show_in_menu'        => true,
-        'query_var'           => true,
-        'rewrite'             => array('slug' => 'panel'),
-        'capability_type'     => 'post',
-        'hierarchical'        => false,
-        'menu_position'       => 5,
-        'menu_icon'           => 'dashicons-calendar-alt',
-        'supports'            => array('title', 'editor', 'thumbnail'),
-        'show_in_rest'        => true,
-    );
-
-    register_post_type('panel', $args);
-}
-add_action('init', 'okisam_register_panel_cpt');
 
 /**
  * Panel Management Utility Functions
@@ -57,7 +20,7 @@ function okisam_get_active_panel() {
         'meta_query'     => array(
             array(
                 'key'     => 'panel_status',
-                'value'   => 'activo',
+                'value'   => 'active',
                 'compare' => '='
             )
         ),
@@ -75,14 +38,23 @@ function okisam_get_active_panel() {
 }
 
 /**
- * Get all panels ordered by date
+ * Get all panels for the current year ordered by date
  * @return array Array of panel post objects
  */
 function okisam_get_all_panels() {
+    $current_year = date('Y');
     $args = array(
         'post_type'      => 'panel',
         'posts_per_page' => -1,
         'post_status'    => 'publish',
+        'meta_query'     => array(
+            array(
+                'key'     => 'panel_date',
+                'value'   => array($current_year . '-01-01', $current_year . '-12-31'),
+                'compare' => 'BETWEEN',
+                'type'    => 'DATE'
+            )
+        ),
         'orderby'        => 'meta_value',
         'meta_key'       => 'panel_date',
         'order'          => 'ASC'
@@ -266,13 +238,13 @@ function okisam_update_panel_statuses() {
         
         if ($panel_to_activate && $panel->ID === $panel_to_activate->ID) {
             // This is the panel that should be active
-            if ($current_status !== 'activo') {
-                update_field('panel_status', 'activo', $panel->ID);
+            if ($current_status !== 'active') {
+                update_field('panel_status', 'active', $panel->ID);
             }
         } else {
             // All other panels should be hidden
-            if ($current_status !== 'oculto') {
-                update_field('panel_status', 'oculto', $panel->ID);
+            if ($current_status !== 'hidden') {
+                update_field('panel_status', 'hidden', $panel->ID);
             }
         }
     }
