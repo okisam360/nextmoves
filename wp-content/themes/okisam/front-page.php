@@ -33,15 +33,9 @@
 			
 			get_template_part('templates/parts/header-panel');
 			
-			// Only show Q1 if it should be unlocked
-			if (okisam_should_q1_be_unlocked($active_panel->ID)) {
-				get_template_part('templates/parts/q1');
-			}
-			
-			// Only show Q2 if it should be unlocked
-			if (okisam_should_q2_be_unlocked($active_panel->ID)) {
-				get_template_part('templates/parts/q2');
-			}
+			// Always show Q1 and Q2 - they will handle their own locked state display
+			get_template_part('templates/parts/q1');
+			get_template_part('templates/parts/q2');
 		} else {
 			// No active panel found - show default message
 			echo '<div class="no-panel-message">';

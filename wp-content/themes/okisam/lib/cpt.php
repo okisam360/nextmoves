@@ -175,8 +175,13 @@ function okisam_check_unlock_date($date_string) {
         return false;
     }
 
+    $timestamp = strtotime($date_string);
+    if ($timestamp === false) {
+        return false;
+    }
+
     $current_date = current_time('Y-m-d');
-    $unlock_date = date('Y-m-d', strtotime($date_string));
+    $unlock_date = date('Y-m-d', $timestamp);
 
     return $current_date >= $unlock_date;
 }
@@ -209,6 +214,24 @@ function okisam_should_q1_be_unlocked($panel_id) {
 function okisam_should_q2_be_unlocked($panel_id) {
     $q2_unlock_date = get_field('panel_q2_unlock_date', $panel_id);
     return okisam_check_unlock_date($q2_unlock_date);
+}
+
+/**
+ * Format unlock date for display
+ * @param string $date_string The date to format
+ * @return string Formatted date or fallback text
+ */
+function okisam_format_unlock_date($date_string) {
+    if (!$date_string) {
+        return 'próximamente';
+    }
+    
+    $unlock_timestamp = strtotime($date_string);
+    if ($unlock_timestamp === false) {
+        return 'próximamente';
+    }
+    
+    return date_i18n('j \d\e F, Y', $unlock_timestamp);
 }
 
 /**
