@@ -175,8 +175,13 @@ function okisam_check_unlock_date($date_string) {
         return false;
     }
 
+    $timestamp = strtotime($date_string);
+    if ($timestamp === false) {
+        return false;
+    }
+
     $current_date = current_time('Y-m-d');
-    $unlock_date = date('Y-m-d', strtotime($date_string));
+    $unlock_date = date('Y-m-d', $timestamp);
 
     return $current_date >= $unlock_date;
 }
