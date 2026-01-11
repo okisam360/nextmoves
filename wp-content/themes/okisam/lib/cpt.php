@@ -212,6 +212,24 @@ function okisam_should_q2_be_unlocked($panel_id) {
 }
 
 /**
+ * Format unlock date for display
+ * @param string $date_string The date to format
+ * @return string Formatted date or fallback text
+ */
+function okisam_format_unlock_date($date_string) {
+    if (!$date_string) {
+        return 'próximamente';
+    }
+    
+    $unlock_timestamp = strtotime($date_string);
+    if ($unlock_timestamp === false) {
+        return 'próximamente';
+    }
+    
+    return date_i18n('j \d\e F, Y', $unlock_timestamp);
+}
+
+/**
  * Update panel activation status
  * Run this daily via cron to check and update panel statuses
  */

@@ -38,12 +38,7 @@ $container_class = $is_q2_unlocked ? 'q2-container' : 'q2-container locked';
 
 // Get unlock date for locked message
 $q2_unlock_date = get_field('panel_q2_unlock_date', $panel_id);
-if ($q2_unlock_date) {
-	$unlock_timestamp = strtotime($q2_unlock_date);
-	$unlock_date_formatted = $unlock_timestamp !== false ? date_i18n('j \d\e F, Y', $unlock_timestamp) : 'próximamente';
-} else {
-	$unlock_date_formatted = 'próximamente';
-}
+$unlock_date_formatted = okisam_format_unlock_date($q2_unlock_date);
 ?>
 
 <div class="p-20 <?php echo esc_attr($container_class); ?>">
