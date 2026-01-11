@@ -21,9 +21,15 @@ $is_q2_unlocked = okisam_should_q2_be_unlocked($panel_id);
 
 // Get Q2 flexible content
 $q2_modules = get_field('panel_q2', $panel_id);
+$has_modules = $q2_modules && is_array($q2_modules) && count($q2_modules) > 0;
 
 // Edge case: If Q2 is unlocked but has no cards, don't show anything (maintain previous panel)
-if ($is_q2_unlocked && (!$q2_modules || !is_array($q2_modules) || count($q2_modules) === 0)) {
+if ($is_q2_unlocked && !$has_modules) {
+	return;
+}
+
+// If locked and has no modules, also don't show (nothing to preview)
+if (!$is_q2_unlocked && !$has_modules) {
 	return;
 }
 
@@ -47,20 +53,18 @@ $unlock_date_formatted = $q2_unlock_date ? date_i18n('j \d\e F, Y', strtotime($q
 	
 	<div class="modules-grid">
 		<?php
-		if ($q2_modules && is_array($q2_modules)) {
-			foreach ($q2_modules as $module) {
-				$layout = $module['acf_fc_layout'];
-				
-				// Include the appropriate module template based on layout type
-				$module_template = locate_template('templates/modules/' . $layout . '.php');
-				if ($module_template) {
-					include $module_template;
-				} else {
-					// Fallback: display basic module info
-					echo '<div class="module module-' . esc_attr($layout) . '">';
-					echo '<p>Módulo: ' . esc_html($layout) . '</p>';
-					echo '</div>';
-				}
+		foreach ($q2_modules as $module) {
+			$layout = $module['acf_fc_layout'];
+			
+			// Include the appropriate module template based on layout type
+			$module_template = locate_template('templates/modules/' . $layout . '.php');
+			if ($module_template) {
+				include $module_template;
+			} else {
+				// Fallback: display basic module info
+				echo '<div class="module module-' . esc_attr($layout) . '">';
+				echo '<p>Módulo: ' . esc_html($layout) . '</p>';
+				echo '</div>';
 			}
 		}
 		?>
