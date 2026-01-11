@@ -38,7 +38,12 @@ $container_class = $is_q1_unlocked ? 'q1-container' : 'q1-container locked';
 
 // Get unlock date for locked message
 $q1_unlock_date = get_field('panel_q1_unlock_date', $panel_id);
-$unlock_date_formatted = $q1_unlock_date ? date_i18n('j \d\e F, Y', strtotime($q1_unlock_date)) : 'próximamente';
+if ($q1_unlock_date) {
+	$unlock_timestamp = strtotime($q1_unlock_date);
+	$unlock_date_formatted = $unlock_timestamp !== false ? date_i18n('j \d\e F, Y', $unlock_timestamp) : 'próximamente';
+} else {
+	$unlock_date_formatted = 'próximamente';
+}
 ?>
 
 <div class="p-20 <?php echo esc_attr($container_class); ?>">
