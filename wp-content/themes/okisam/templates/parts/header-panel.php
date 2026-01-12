@@ -38,7 +38,7 @@ $video_play = $theme_uri . '/app/icons/video-play.svg';
 		<div class="panel-band text-neutral-00 bg-neutral-95"> 
 			<div class="panel-band-content">
 				<p class="h1-semibold"><?php echo esc_html($panel_report_delivery ? $panel_report_delivery : 'Próxima Entrega'); ?></p>
-				<p class="h4-regular">Informe 2026<?php if ($panel_report_delivery): ?><br><?php echo esc_html($panel_report_delivery); ?><?php endif; ?></p>
+				<p class="h4-regular">Informe 2026<?php if ($panel_report_delivery): ?><br>Entrega de mes<?php endif; ?></p>
 			</div>
 		</div>
 		<div class="panel-info">

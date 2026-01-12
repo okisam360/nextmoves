@@ -951,9 +951,12 @@ main {
     margin: 0;
     font-size: 16px;
     color: var(--neutral-70);
-}
+} 
 
 @media (max-width: 768px) {
+    .locked-overlay{
+      background-image: url('../../app/images/blur-image-mobile.png');
+    }
     .locked-message {
         padding: 20px 25px;
     }
