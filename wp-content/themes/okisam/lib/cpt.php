@@ -207,13 +207,39 @@ function okisam_should_panel_be_active($panel_id) {
 }
 
 /**
+ * Check if a given Q unlock should be unlocked for a panel
+ * @param int $panel_id The panel ID to check
+ * @param string $q_field The ACF field name for the unlock day (e.g., 'panel_q1_unlock_day')
+ * @return bool True if the Q should be unlocked
+ */
+function okisam_should_q_be_unlocked($panel_id, $q_field) {
+    $unlock_day = get_field($q_field, $panel_id);
+    $panel_date = get_field('panel_date', $panel_id);
+
+    // Validate fields
+    if (
+        !$unlock_day ||
+        !$panel_date ||
+        !is_numeric($unlock_day) ||
+        intval($unlock_day) < 1 ||
+        intval($unlock_day) > 31
+    ) {
+        return false;
+    }
+
+    $panel_year = date('Y');
+    $panel_month = date('m');
+    $unlock_date = sprintf('%s-%s-%02d', $panel_year, $panel_month, intval($unlock_day));
+    return okisam_check_unlock_date($unlock_date);
+}
+
+/**
  * Check if Q1 should be unlocked for a panel
  * @param int $panel_id The panel ID to check
  * @return bool True if Q1 should be unlocked
  */
 function okisam_should_q1_be_unlocked($panel_id) {
-    $q1_unlock_date = get_field('panel_q1_unlock_day', $panel_id);
-    return okisam_check_unlock_date($q1_unlock_date);
+    return okisam_should_q_be_unlocked($panel_id, 'panel_q1_unlock_day');
 }
 
 /**
@@ -222,8 +248,7 @@ function okisam_should_q1_be_unlocked($panel_id) {
  * @return bool True if Q2 should be unlocked
  */
 function okisam_should_q2_be_unlocked($panel_id) {
-    $q2_unlock_date = get_field('panel_q2_unlock_day', $panel_id);
-    return okisam_check_unlock_date($q2_unlock_date);
+    return okisam_should_q_be_unlocked($panel_id, 'panel_q2_unlock_day');
 }
 
 /**
