@@ -41,9 +41,9 @@ Organización de los campos principales usados por el CPT `panel` (Etiqueta / No
 | Video Introductorio (alternativo) | `panel_video` | URL |
 | Título de Video | `panel_title_video` | Texto |
 | Imagen del Video | `panel_video_thumbnail` | Imagen |
-| Día de desbloqueo Q1 | `panel_q1_unlock_date` | Selección |
+| Día de desbloqueo Q1 | `panel_q1_unlock_day` | Selección |
 | 1º Quincena | `panel_q1` | Contenido flexible |
-| Día de desbloqueo Q2 | `panel_q2_unlock_date` | Selección |
+| Día de desbloqueo Q2 | `panel_q2_unlock_day` | Selección |
 | 2º Quincena | `panel_q2` | Contenido flexible |
 
 

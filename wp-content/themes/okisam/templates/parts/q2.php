@@ -37,7 +37,7 @@ if (!$is_q2_unlocked && !$has_modules) {
 $container_class = $is_q2_unlocked ? 'q2-container' : 'q2-container locked';
 
 // Get unlock date for locked message
-$q2_unlock_date = get_field('panel_q2_unlock_date', $panel_id);
+$q2_unlock_date = get_field('panel_q2_unlock_day', $panel_id);
 $unlock_date_formatted = okisam_format_unlock_date($q2_unlock_date);
 ?>
 

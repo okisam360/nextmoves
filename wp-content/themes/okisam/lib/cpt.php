@@ -202,7 +202,7 @@ function okisam_check_unlock_date($date_string) {
  * @return bool True if the panel should be active
  */
 function okisam_should_panel_be_active($panel_id) {
-    $q1_unlock_date = get_field('panel_q1_unlock_date', $panel_id);
+    $q1_unlock_date = get_field('panel_q1_unlock_day', $panel_id);
     return okisam_check_unlock_date($q1_unlock_date);
 }
 
@@ -212,7 +212,7 @@ function okisam_should_panel_be_active($panel_id) {
  * @return bool True if Q1 should be unlocked
  */
 function okisam_should_q1_be_unlocked($panel_id) {
-    $q1_unlock_date = get_field('panel_q1_unlock_date', $panel_id);
+    $q1_unlock_date = get_field('panel_q1_unlock_day', $panel_id);
     return okisam_check_unlock_date($q1_unlock_date);
 }
 
@@ -222,7 +222,7 @@ function okisam_should_q1_be_unlocked($panel_id) {
  * @return bool True if Q2 should be unlocked
  */
 function okisam_should_q2_be_unlocked($panel_id) {
-    $q2_unlock_date = get_field('panel_q2_unlock_date', $panel_id);
+    $q2_unlock_date = get_field('panel_q2_unlock_day', $panel_id);
     return okisam_check_unlock_date($q2_unlock_date);
 }
 
