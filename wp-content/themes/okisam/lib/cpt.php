@@ -18,10 +18,20 @@ function okisam_get_active_panel() {
         'posts_per_page' => 1,
         'post_status'    => 'publish',
         'meta_query'     => array(
+            'relation' => 'AND',
             array(
-                'key'     => 'panel_status',
-                'value'   => 'active',
-                'compare' => '='
+            'key'     => 'panel_status',
+            'value'   => 'active',
+            'compare' => '='
+            ),
+            array(
+            'key'     => 'panel_date',
+            'value'   => array(
+                date('Y-m-01'), // Primer día del mes actual
+                date('Y-m-t')   // Último día del mes actual
+            ),
+            'compare' => 'BETWEEN',
+            'type'    => 'DATE'
             )
         ),
         'orderby'        => 'date',
