@@ -7,6 +7,76 @@
 /**
  * Panel Management Utility Functions
  */
+function okisam_get_visible_panel()  {
+    $current_panel = okisam_get_current_panel();
+    // verificar que q1 tiene modulos antes de activar el panel, si tiene modulos activar y ocultar los otros, si no tiene buscar el panel anterior
+    if ( $current_panel && okisam_check_panel_has_module( $current_panel->ID, 'panel_q1' ) ) {
+        // hide all panels except active panel
+        okisam_hide_all_panels_except( $current_panel->ID );
+    }else {
+        // buscar panel anterior con modulos en q1
+        $previous_panel = okisam_get_previous_panel( $current_panel->ID );
+        // activa el panel anterior con modulos, hasta que el siguiente panel tenga modulos en q1
+        okisam_hide_all_panels_except( $previous_panel->ID );
+    }
+}
+
+
+/**
+ * Check if a panel has modules in a given Q field
+ * @param int $panel_id The panel ID to check
+ * @param string $q_field The ACF field name for the Q modules (e.g., 'panel_q1' or 'panel_q2')
+ * @return bool True if the panel has modules in the specified Q field
+ */
+function okisam_check_panel_has_module( $panel_id, $q_field ) {
+    $modules = get_field( $q_field, $panel_id );
+    $has_modules = $modules && is_array( $modules ) && count( $modules ) > 0;
+    return $has_modules;    
+}
+
+function okisam_hide_all_panels_except( $panel_id_to_exclude ) {
+    $panels = okisam_get_all_panels();
+    
+    foreach ( $panels as $panel ) {
+        if ( $panel->ID !== $panel_id_to_exclude ) {
+            // Hide this panel
+            update_field( 'panel_status', 'hidden', $panel->ID );
+        } else {
+            // Ensure the excluded panel is active
+            update_field( 'panel_status', 'active', $panel->ID );
+        }
+    }
+}
+
+
+function okisam_get_current_panel() {
+    $args = array(
+        'post_type'      => 'panel',
+        'posts_per_page' => 1,
+        'post_status'    => 'publish',
+        'meta_query'     => array(
+            array(
+                'key'     => 'panel_date',
+                'value'   => array(
+                    date('Y-m-01'), // Primer día del mes actual
+                    date('Y-m-t')   // Último día del mes actual
+                ),
+                'compare' => 'BETWEEN',
+                'type'    => 'DATE'
+            )
+        ),
+        'orderby'        => 'date',
+        'order'          => 'DESC'
+    );
+
+    $query = new WP_Query($args);
+    
+    if ($query->have_posts()) {
+        return $query->posts[0];
+    }
+    
+    return null;
+};
 
 /**
  * Get the active panel
@@ -18,20 +88,10 @@ function okisam_get_active_panel() {
         'posts_per_page' => 1,
         'post_status'    => 'publish',
         'meta_query'     => array(
-            'relation' => 'AND',
             array(
             'key'     => 'panel_status',
             'value'   => 'active',
             'compare' => '='
-            ),
-            array(
-            'key'     => 'panel_date',
-            'value'   => array(
-                date('Y-m-01'), // Primer día del mes actual
-                date('Y-m-t')   // Último día del mes actual
-            ),
-            'compare' => 'BETWEEN',
-            'type'    => 'DATE'
             )
         ),
         'orderby'        => 'date',
@@ -52,6 +112,20 @@ function okisam_get_active_panel() {
  * @return array Array of panel post objects
  */
 function okisam_get_all_panels() {
+    $args = array(
+        'post_type'      => 'panel',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+        'orderby'        => 'meta_value',
+        'meta_key'       => 'panel_date',
+        'order'          => 'ASC'
+    );
+
+    $query = new WP_Query($args);
+    return $query->posts;
+}
+
+function okisam_get_all_panels_current_year() {
     $current_year = date('Y');
     $args = array(
         'post_type'      => 'panel',
@@ -227,11 +301,12 @@ function okisam_should_q_be_unlocked($panel_id, $q_field) {
         return false;
     }
 
-    $panel_year = date('Y');
-    $panel_month = date('m');
+    $panel_year = date('Y', strtotime($panel_date));
+    $panel_month = date('m', strtotime($panel_date));
     $unlock_date = sprintf('%s-%s-%02d', $panel_year, $panel_month, intval($unlock_day));
     return okisam_check_unlock_date($unlock_date);
 }
+
 
 /**
  * Check if Q1 should be unlocked for a panel
