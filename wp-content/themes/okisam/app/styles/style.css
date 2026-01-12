@@ -67,6 +67,7 @@
   --neutral-95: #171A1C;
   --brand-color: #EF5A35;
   --neutral-00: #FFFFFF;
+  --neutral-05: #F4F6F9;
   --neutral-20: #D5D9DD;
   --neutral-70: #6E7B86;
   --cta-default: #EF5A35;
@@ -106,6 +107,7 @@
 .border-neutral-95 { border-color: var(--neutral-95); }
 .border-brand { border-color: var(--brand-color); }
 .border-neutral-00 { border-color: var(--neutral-00); }
+
 .border-neutral-70 { border-color: var(--neutral-70); }
 .border-neutral-20 { border-color: var(--neutral-20); }
 .border-neutral-90 { border-color: var(--neutral-90); }
@@ -118,6 +120,9 @@ html, body {
 body {
   font-family: Graphik;    
   color: #333333; 
+}
+main {
+  background: var(--neutral-05, #F4F6F9);
 }
 
 /* === TIPOGRAFÍAS DE PROYECTO === */
@@ -247,12 +252,13 @@ body {
 
 .front-page-container {
   width: 100%;
+  
 }
 @media (min-width: 992px) {
   .front-page-container {
     max-width: 1300px;
     margin: 0 auto;
-    padding: 25px 15px;
+    padding: 0px;
   }
 }
 
@@ -296,7 +302,7 @@ body {
   gap:100px;
   width:100%;
   margin:0 auto;
-  padding:24px;
+ padding: 100px 24px 24px 24px;
   max-width:1482px;
 }
 .panel-top{
@@ -888,34 +894,51 @@ body {
     opacity: 0.5;
 }
 
-.q1-container.locked::after,
-.q2-container.locked::after {
-    content: '';
+.q1-container.locked, 
+.q2-container.locked {
+    position: relative;
+    height: 1540px;
+    margin: 0px;
+}
+
+.q1-container.locked .modules-grid,
+.q2-container.locked .modules-grid,
+.q1-container.locked h2,
+.q2-container.locked h2 {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0; /* Ocultamos el contenido original ya que usaremos la imagen blur */
+}
+
+.locked-overlay {
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
+    height: 100%;
     background-image: url('../../app/images/blur-image.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    pointer-events: none;
-    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 
 .locked-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
+    z-index: 20;
+    position: relative; /* Para que el z-index funcione */
     text-align: center;
     background: rgba(255, 255, 255, 0.95);
     padding: 30px 40px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    max-width: 90%;
+    max-width: 450px;
+    width: 90%;
 }
 
 .locked-message h3 {

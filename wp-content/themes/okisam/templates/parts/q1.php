@@ -42,14 +42,16 @@ $unlock_date_formatted = okisam_format_unlock_date($q1_unlock_date);
 ?>
 
 <div class="p-20 <?php echo esc_attr($container_class); ?>">
-	<h2>Q1 - Primera Quincena</h2>
-	
 	<?php if (!$is_q1_unlocked): ?>
-		<div class="locked-message">
-			<h3>🔒 Contenido Bloqueado</h3>
-			<p>Esta quincena se desbloqueará el <?php echo esc_html($unlock_date_formatted); ?></p>
+		<div class="locked-overlay">
+			<div class="locked-message">
+				<h3>🔒 Contenido Bloqueado</h3>
+				<p>Esta quincena se desbloqueará el <?php echo esc_html($unlock_date_formatted); ?></p>
+			</div>
 		</div>
 	<?php endif; ?>
+
+	<h2>Q1 - Primera Quincena</h2>
 	
 	<div class="modules-grid">
 		<?php
