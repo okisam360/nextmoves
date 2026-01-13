@@ -5,6 +5,49 @@
 
 
 /**
+ * Panel mode helpers
+ */
+function okisam_get_panel_mode() {
+    $mode = get_field('panel_mode', 'option');
+    $mode = in_array($mode, ['history', 'yearly'], true) ? $mode : 'yearly';
+
+    $history_timestamp = okisam_get_panel_history_mode_date();
+    if ($mode === 'yearly' && $history_timestamp) {
+        $now = current_time('timestamp');
+        if ($now >= $history_timestamp) {
+            // settear modo history por fecha automáticamente
+            okisam_set_panel_mode('history');
+            return 'history';
+        }
+    }
+
+    return $mode;
+}
+
+function okisam_set_panel_mode($mode) {
+    if (!in_array($mode, ['history', 'yearly'], true)) {
+        return false;
+    }
+
+    return update_field('panel_mode', $mode, 'option');
+}
+
+function okisam_get_panel_history_mode_date() {
+    $date_value = get_field('panel_date_history_mode', 'option');
+    if (!$date_value) {
+        return null;
+    }
+
+    // Accepts datetime strings like "Y-m-d H:i:s"; falls back to null on parse failure.
+    $timestamp = strtotime($date_value);
+    if ($timestamp === false) {
+        return null;
+    }
+
+    return $timestamp;
+}
+
+/**
  * Panel Management Utility Functions
  */
 function okisam_get_visible_panel()  {
@@ -125,6 +168,11 @@ function okisam_get_all_panels() {
     return $query->posts;
 }
 
+/**
+ * Get all panels for the current year ordered by date
+ * @return array Array of panel post objects
+ */
+
 function okisam_get_all_panels_current_year() {
     $current_year = date('Y');
     $args = array(
@@ -141,7 +189,7 @@ function okisam_get_all_panels_current_year() {
         ),
         'orderby'        => 'meta_value',
         'meta_key'       => 'panel_date',
-        'order'          => 'ASC'
+        'order'          => 'DESC'
     );
 
     $query = new WP_Query($args);
@@ -233,20 +281,25 @@ function okisam_get_next_panel($panel_id) {
 }
 
 /**
- * Check if we are in the final phase (T.16) where all panels should be visible
- * @return bool True if in final phase
+ * Check if we are in history mode
+ * @return bool True if in history mode
  */
-function okisam_is_final_phase() {
-    // Get the option for final phase or check if it's December
-    $final_phase = get_option('okisam_final_phase', false);
-    
-    // Alternative: check if we're in December (final phase)
-    $current_month = date('n');
-    if ($current_month == 12) {
+
+function okisam_is_history_mode() {
+    $panel_mode = okisam_get_panel_mode();
+
+    if ($panel_mode === 'history') {
         return true;
     }
-    
-    return $final_phase;
+
+    if ($panel_mode === 'yearly') {
+        $current_month = date('n');
+        if ($current_month == 12) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -408,3 +461,42 @@ function okisam_clear_panel_status_cron() {
     }
 }
 add_action('switch_theme', 'okisam_clear_panel_status_cron');
+
+/**
+ * REST API endpoint to read/update panel mode.
+ */
+function okisam_register_panel_mode_rest_routes() {
+    register_rest_route('okisam/v1', '/panel-mode', [
+        [
+            'methods'             => WP_REST_Server::READABLE,
+            'permission_callback' => '__return_true',
+            'callback'            => function () {
+                return [
+                    'panel_mode' => okisam_get_panel_mode(),
+                ];
+            },
+        ],
+        [
+            'methods'             => WP_REST_Server::EDITABLE,
+            'permission_callback' => function () {
+                return current_user_can('manage_options');
+            },
+            'args'                => [
+                'panel_mode' => [
+                    'required' => true,
+                    'type'     => 'string',
+                    'enum'     => ['history', 'yearly'],
+                ],
+            ],
+            'callback'            => function (WP_REST_Request $request) {
+                $mode = $request->get_param('panel_mode');
+                okisam_set_panel_mode($mode);
+
+                return [
+                    'panel_mode' => okisam_get_panel_mode(),
+                ];
+            },
+        ],
+    ]);
+}
+add_action('rest_api_init', 'okisam_register_panel_mode_rest_routes');

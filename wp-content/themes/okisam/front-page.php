@@ -8,11 +8,11 @@
 <div class="front-page-container">
 	<?php 
 	// Check if we're in final phase (T.16) where all panels should be visible
-	$is_final_phase = okisam_is_final_phase();
+	$is_history_mode = okisam_is_history_mode();
 	
-	if ($is_final_phase) {
+	if ($is_history_mode) {
 		// Show all panels in final phase
-		$panels = okisam_get_all_panels();
+		$panels = okisam_get_all_panels_current_year();
 		foreach ($panels as $panel) {
 			// Set global panel ID for template parts
 			global $panel_id;

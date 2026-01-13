@@ -17,9 +17,14 @@ This implementation provides automatic panel visibility management for the NextM
 - **Q2 Unlock**: When the Q2 unlock date is reached, Q2 content is added (Q1 remains visible)
 - **Progressive Disclosure**: Content is revealed progressively based on unlock dates
 
-### 3. Final Phase Mode (T.16)
-- **All Panels Visible**: During the final phase (typically December), all panels become visible
+### 3. Final Phase Mode (T.16) / Panel Mode
+- **All Panels Visible**: During the final phase (typically December) or when `panel_mode` is `history`, all panels become visible
 - **Historical View**: Users can see all panels from the entire year
+- **Manual/Programmed Mode Switch**: `panel_mode` comes from the ACF options group
+    - Field `panel_mode` (select): `yearly` (default, single active panel) or `history` (all panels)
+    - Field `panel_date_history_mode` (datetime `Y-m-d H:i:s`, optional): if set and current WP time ≥ this datetime, the system auto-switches to `history` even if `panel_mode` is `yearly`
+    - Read: `GET /wp-json/okisam/v1/panel-mode`
+    - Update (admins only): `POST /wp-json/okisam/v1/panel-mode` with body `{ "panel_mode": "yearly" | "history" }`
 
 ## Functions
 
