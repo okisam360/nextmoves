@@ -197,6 +197,35 @@ function okisam_get_all_panels_current_year() {
 }
 
 /**
+ * Get panels batch for lazy loading
+ * @param int $page The page number
+ * @param int $per_page Number of panels per page
+ * @return WP_Query
+ */
+function okisam_get_panels_batch($page = 1, $per_page = 3) {
+    $current_year = date('Y');
+    $args = array(
+        'post_type'      => 'panel',
+        'posts_per_page' => $per_page,
+        'paged'          => $page,
+        'post_status'    => 'publish',
+        'meta_query'     => array(
+            array(
+                'key'     => 'panel_date',
+                'value'   => array($current_year . '-01-01', $current_year . '-12-31'),
+                'compare' => 'BETWEEN',
+                'type'    => 'DATE'
+            )
+        ),
+        'orderby'        => 'meta_value',
+        'meta_key'       => 'panel_date',
+        'order'          => 'DESC'
+    );
+
+    return new WP_Query($args);
+}
+
+/**
  * Get the previous panel (relative to a given panel)
  * @param int $panel_id The current panel ID
  * @return WP_Post|null The previous panel post object or null
@@ -495,6 +524,49 @@ function okisam_register_panel_mode_rest_routes() {
                 return [
                     'panel_mode' => okisam_get_panel_mode(),
                 ];
+            },
+        ],
+    ]);
+
+    register_rest_route('okisam/v1', '/history-panels', [
+        [
+            'methods'             => WP_REST_Server::READABLE,
+            'permission_callback' => '__return_true',
+            'args'                => [
+                'page' => [
+                    'default'           => 1,
+                    'sanitize_callback' => 'absint',
+                ],
+            ],
+            'callback'            => function (WP_REST_Request $request) {
+                $page = $request->get_param('page');
+                $query = okisam_get_panels_batch($page);
+                
+                if (!$query->have_posts()) {
+                    return new WP_REST_Response([
+                        'html'     => '',
+                        'has_more' => false,
+                    ], 200);
+                }
+
+                ob_start();
+                while ($query->have_posts()) {
+                    $query->the_post();
+                    global $panel_id;
+                    $panel_id = get_the_ID();
+                    
+                    get_template_part('templates/parts/header-panel');
+                    get_template_part('templates/parts/q1');
+                    get_template_part('templates/parts/q2');
+                }
+                wp_reset_postdata();
+                $html = ob_get_clean();
+
+                return new WP_REST_Response([
+                    'html'     => $html,
+                    'has_more' => $page < $query->max_num_pages,
+                    'max_pages' => $query->max_num_pages,
+                ], 200);
             },
         ],
     ]);

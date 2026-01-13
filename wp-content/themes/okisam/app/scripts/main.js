@@ -99,10 +99,55 @@
 	    },'slow');
 	});
 
+	// Lazy load history panels
+	$(document).ready(function() {
+		var $historyContainer = $('#history-panels-container');
+		var $loader = $('#history-loader');
+		var loading = false;
 
+		if ($historyContainer.length && $loader.length) {
+			var observer = new IntersectionObserver(function(entries) {
+				if (entries[0].isIntersecting && !loading) {
+					var hasMore = $historyContainer.attr('data-has-more') === 'true';
+					var page = parseInt($historyContainer.attr('data-page'));
 
+					if (hasMore) {
+						loading = true;
+						$loader.addClass('is-loading');
 
+						$.ajax({
+							url: '/wp-json/okisam/v1/history-panels',
+							data: { page: page + 1 },
+							method: 'GET',
+							success: function(response) {
+								if (response.html) {
+									$historyContainer.append(response.html);
+									$historyContainer.attr('data-page', page + 1);
+									$historyContainer.attr('data-has-more', response.has_more ? 'true' : 'false');
+									
+									if (!response.has_more) {
+										$loader.remove();
+										observer.unobserve($loader[0]);
+									}
+								}
+							},
+							error: function() {
+								loading = false;
+								$loader.removeClass('is-loading');
+							},
+							complete: function() {
+								loading = false;
+								$loader.removeClass('is-loading');
+							}
+						});
+					}
+				}
+			}, {
+				rootMargin: '250px'
+			});
 
-
+			observer.observe($loader[0]);
+		}
+	});
 
 })(jQuery);

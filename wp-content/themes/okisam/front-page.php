@@ -11,16 +11,26 @@
 	$is_history_mode = okisam_is_history_mode();
 	
 	if ($is_history_mode) {
-		// Show all panels in final phase
-		$panels = okisam_get_all_panels_current_year();
-		foreach ($panels as $panel) {
-			// Set global panel ID for template parts
-			global $panel_id;
-			$panel_id = $panel->ID;
-			
-			get_template_part('templates/parts/header-panel');
-			get_template_part('templates/parts/q1');
-			get_template_part('templates/parts/q2');
+		// Show all panels in final phase - Lazy loaded
+		$query = okisam_get_panels_batch(1);
+		echo '<div id="history-panels-container" data-page="1" data-has-more="' . ($query->max_num_pages > 1 ? 'true' : 'false') . '">';
+		if ($query->have_posts()) {
+			while ($query->have_posts()) {
+				$query->the_post();
+				// Set global panel ID for template parts
+				global $panel_id;
+				$panel_id = get_the_ID();
+				
+				get_template_part('templates/parts/header-panel');
+				get_template_part('templates/parts/q1');
+				get_template_part('templates/parts/q2');
+			}
+			wp_reset_postdata();
+		}
+		echo '</div>';
+		
+		if ($query->max_num_pages > 1) {
+			echo '<div id="history-loader" class="history-loader"><span class="loader"></span></div>';
 		}
 	} else {
 		// Show panel based on current date

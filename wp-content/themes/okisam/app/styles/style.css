@@ -969,3 +969,37 @@ main {
         font-size: 14px;
     }
 }
+
+/* History Lazy Loading */
+.history-loader {
+    display: flex;
+    justify-content: center;
+    padding: 60px 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.history-loader.is-loading {
+    opacity: 1;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 3px solid #000;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
