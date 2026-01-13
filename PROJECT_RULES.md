@@ -46,6 +46,13 @@ Organización de los campos principales usados por el CPT `panel` (Etiqueta / No
 | Día de desbloqueo Q2 | `panel_q2_unlock_day` | Selección |
 | 2º Quincena | `panel_q2` | Contenido flexible |
 
+### Modos del Panel
+
+- `panel_mode` (opción WP definida en Ajustes generales de panel): controla la visibilidad global del sitio.
+  - `yearly` (modo anual): solo se muestra el panel activo; el resto permanece oculto siguiendo `panel_status`.
+  - `history` (modo histórico manual): se muestran todos los paneles, ignorando la ocultación por estado.
+- En Ajustes generales de panel también se define la **Fecha de activación del modo histórico** (almacenada como opción WP), usada por la lógica para entrar en histórico según calendario.
+
 
 ## Esquemas (layouts) de las Quincenas
 
