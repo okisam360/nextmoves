@@ -341,15 +341,15 @@ function okisam_check_unlock_date($date_string) {
         return false;
     }
 
+    $current_time = current_time('Y-m-d H:i:s');
     $timestamp = strtotime($date_string);
     if ($timestamp === false) {
         return false;
     }
 
-    $current_date = current_time('Y-m-d');
-    $unlock_date = date('Y-m-d', $timestamp);
+    $unlock_time = date('Y-m-d H:i:s', $timestamp);
 
-    return $current_date >= $unlock_date;
+    return $current_time >= $unlock_time;
 }
 
 /**
@@ -358,8 +358,30 @@ function okisam_check_unlock_date($date_string) {
  * @return bool True if the panel should be active
  */
 function okisam_should_panel_be_active($panel_id) {
-    $q1_unlock_date = get_field('panel_q1_unlock_day', $panel_id);
-    return okisam_check_unlock_date($q1_unlock_date);
+    return okisam_should_q1_be_unlocked($panel_id);
+}
+
+/**
+ * Get the full unlock date string for a given Q
+ * @param int $panel_id The panel ID
+ * @param string $q_field The ACF field name for the unlock day
+ * @return string|null The full unlock date string (Y-m-d H:i:s) or null
+ */
+function okisam_get_q_unlock_date($panel_id, $q_field) {
+    $unlock_day = get_field($q_field, $panel_id);
+    $panel_date = get_field('panel_date', $panel_id);
+
+    if (!$unlock_day || !$panel_date) {
+        return null;
+    }
+
+    $q_time_field = str_replace('_day', '_time', $q_field);
+    $unlock_time = get_field($q_time_field, $panel_id) ?: '00:00:00';
+
+    $panel_year = date('Y', strtotime($panel_date));
+    $panel_month = date('m', strtotime($panel_date));
+    
+    return sprintf('%s-%s-%02d %s', $panel_year, $panel_month, intval($unlock_day), $unlock_time);
 }
 
 /**
@@ -369,24 +391,13 @@ function okisam_should_panel_be_active($panel_id) {
  * @return bool True if the Q should be unlocked
  */
 function okisam_should_q_be_unlocked($panel_id, $q_field) {
-    $unlock_day = get_field($q_field, $panel_id);
-    $panel_date = get_field('panel_date', $panel_id);
+    $unlock_datetime = okisam_get_q_unlock_date($panel_id, $q_field);
 
-    // Validate fields
-    if (
-        !$unlock_day ||
-        !$panel_date ||
-        !is_numeric($unlock_day) ||
-        intval($unlock_day) < 1 ||
-        intval($unlock_day) > 31
-    ) {
+    if (!$unlock_datetime) {
         return false;
     }
-
-    $panel_year = date('Y', strtotime($panel_date));
-    $panel_month = date('m', strtotime($panel_date));
-    $unlock_date = sprintf('%s-%s-%02d', $panel_year, $panel_month, intval($unlock_day));
-    return okisam_check_unlock_date($unlock_date);
+    
+    return okisam_check_unlock_date($unlock_datetime);
 }
 
 
@@ -423,7 +434,20 @@ function okisam_format_unlock_date($date_string) {
         return 'próximamente';
     }
     
-    return date_i18n('j \d\e F, Y', $unlock_timestamp);
+    $current_year = date('Y');
+    $unlock_year = date('Y', $unlock_timestamp);
+    
+    $format = 'j \d\e F';
+    if ($unlock_year !== $current_year) {
+        $format .= ', Y';
+    }
+
+    // Add time if it's not midnight
+    if (date('H:i:s', $unlock_timestamp) !== '00:00:00') {
+        $format .= ' \a \l\a\s H:i';
+    }
+    
+    return date_i18n($format, $unlock_timestamp);
 }
 
 /**
