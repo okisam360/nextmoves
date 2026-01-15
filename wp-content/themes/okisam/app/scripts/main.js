@@ -150,4 +150,64 @@
 		}
 	});
 
+	// Countdown for locked quincenas
+	$(document).ready(function() {
+		$('.q-lock-countdown').each(function() {
+			var $countdown = $(this);
+			var untilDate = new Date($countdown.data('until')).getTime();
+			
+			if (isNaN(untilDate)) return;
+
+			var $days = $countdown.find('[data-days]');
+			var $hours = $countdown.find('[data-hours]');
+			var $mins = $countdown.find('[data-mins]');
+			var $secs = $countdown.find('[data-secs]');
+
+			var x = setInterval(function() {
+				var now = new Date().getTime();
+				var distance = untilDate - now;
+
+				if (distance < 0) {
+					clearInterval(x);
+					// If the date is in the past, maybe show 00:00:00:00 or reload
+					$days.text('00');
+					$hours.text('00');
+					$mins.text('00');
+					$secs.text('00');
+					// location.reload(); 
+					return;
+				}
+
+				var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+				var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+				var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+				$days.text(days < 10 ? '0' + days : days);
+				$hours.text(hours < 10 ? '0' + hours : hours);
+				$mins.text(minutes < 10 ? '0' + minutes : minutes);
+				$secs.text(seconds < 10 ? '0' + seconds : seconds);
+			}, 1000);
+		});
+	});
+
+	// Subscription form logic (Simulated)
+	$(document).ready(function() {
+		$('.q-lock-form').on('submit', function(e) {
+			e.preventDefault();
+			var $form = $(this);
+			var $btn = $form.find('button');
+			var originalText = $btn.text();
+
+			$btn.text('Enviando...').prop('disabled', true);
+
+			// Simulated feedback
+			setTimeout(function() {
+				$form.fadeOut(300, function() {
+					$(this).html('<div class="h3-regular text-brand bg-white p-20 border-radius-20" style="border-radius: 20px; color: #EF5A35;">¡Gracias por suscribirte! Te avisaremos pronto.</div>').fadeIn();
+				});
+			}, 1500);
+		});
+	});
+
 })(jQuery);
