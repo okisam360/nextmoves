@@ -2,7 +2,7 @@
 
 Resumen ejecutivo
 - Objetivo: Unificar reglas y convenciones para la implementación ACF del CPT `panel`, basadas en los planes en `Plans/`.
-- Ámbito: Estructura de campos para Q1 y Q2, tipos de módulo, `unlock_date`, convenciones de slugs y prácticas de UI para Marketing y Frontend.
+- Ámbito: Estructura de campos para Q1 y Q2, tipos de módulo, `unlock_date/time`, convenciones de slugs y prácticas de UI para Marketing y Frontend.
 
 ## Tipo de contenido (CPT)
 
@@ -42,8 +42,10 @@ Organización de los campos principales usados por el CPT `panel` (Etiqueta / No
 | Título de Video | `panel_title_video` | Texto |
 | Imagen del Video | `panel_video_thumbnail` | Imagen |
 | Día de desbloqueo Q1 | `panel_q1_unlock_day` | Selección |
+| Hora de desbloqueo Q1 | `panel_q1_unlock_time` | Selector de hora |
 | 1º Quincena | `panel_q1` | Contenido flexible |
 | Día de desbloqueo Q2 | `panel_q2_unlock_day` | Selección |
+| Hora de desbloqueo Q2 | `panel_q2_unlock_time` | Selector de hora |
 | 2º Quincena | `panel_q2` | Contenido flexible |
 
 ### Modos del Panel
