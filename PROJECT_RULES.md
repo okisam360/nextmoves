@@ -118,6 +118,11 @@ Cada campo tipo "Contenido flexible" (`panel_q1` y `panel_q2`) contiene una list
 | Contenido | `article_content` | Editor WYSIWYG |
 | Imagen principal | `article_image` | Imagen |
 | Color | `article_color` | Selección |
+| URL de enlace / compartir | `article_url` | URL |
+| Nombre del autor | `article_author_name` | Texto |
+| Imagen del autor | `article_author_image` | Imagen |
+| Fecha de publicación | `article_date` | Texto |
+| Tiempo de lectura | `article_read_time` | Texto |
 
 Notas:
 - Mantener los slugs y prefijos de campo idénticos entre `panel_q1` y `panel_q2` para que el frontend pueda procesarlos de forma agnóstica a la quincena.

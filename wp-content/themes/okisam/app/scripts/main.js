@@ -208,4 +208,31 @@
 		});
 	});
 
+	// Article Modal Logic
+	$('.open-article-modal').on('click', function(e) {
+		e.preventDefault();
+		var modalId = $(this).data('modal');
+		var $modal = $('#' + modalId);
+		
+		// Append to body to avoid clipping issues with transformed parent containers
+		$modal.appendTo('body');
+
+		$modal.fadeIn(300);
+		$('body').addClass('modal-open'); // Prevent scroll
+	});
+
+	$('.modal-article-close, .modal-article-overlay').on('click', function() {
+		var $modal = $(this).closest('.modal-article');
+		$modal.fadeOut(300);
+		$('body').removeClass('modal-open');
+	});
+
+	// Close on ESC
+	$(document).on('keydown', function(e) {
+		if (e.key === "Escape") {
+			$('.modal-article:visible').fadeOut(300);
+			$('body').removeClass('modal-open');
+		}
+	});
+
 })(jQuery);
