@@ -10,15 +10,17 @@ $unlock_date = okisam_get_q_unlock_date($panel_id, $q_field);
 $panel_image = get_field('panel_image', $panel_id);
 $bg_url = ($panel_image && isset($panel_image['url'])) ? $panel_image['url'] : '';
 
-// Convert unlock date to ISO format for JS
-$iso_unlock_date = $unlock_date ? date('c', strtotime($unlock_date)) : '';
+// Get remaining seconds using WordPress current time to avoid timezone issues
+$unlock_timestamp = strtotime($unlock_date);
+$current_timestamp = current_time('timestamp');
+$remaining_seconds = $unlock_timestamp - $current_timestamp;
 ?>
 
 <div class="locked-overlay">
     <div class="q-lock-content text-neutral-00 text-center">
         <h2 class="h1-semibold mb-30">Nuevo contenido en</h2>
 
-        <div class="q-lock-countdown mb-40" data-until="<?php echo esc_attr($iso_unlock_date); ?>">
+        <div class="q-lock-countdown mb-40" data-remaining="<?php echo esc_attr($remaining_seconds); ?>">
                 <div class="countdown-item">
                     <span class="countdown-value h1-semibold" data-days>00</span>
                     <span class="countdown-label body-l-regular">Días</span>

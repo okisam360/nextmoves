@@ -154,9 +154,9 @@
 	$(document).ready(function() {
 		$('.q-lock-countdown').each(function() {
 			var $countdown = $(this);
-			var untilDate = new Date($countdown.data('until')).getTime();
+			var remainingSeconds = parseInt($countdown.data('remaining'));
 			
-			if (isNaN(untilDate)) return;
+			if (isNaN(remainingSeconds)) return;
 
 			var $days = $countdown.find('[data-days]');
 			var $hours = $countdown.find('[data-hours]');
@@ -164,29 +164,27 @@
 			var $secs = $countdown.find('[data-secs]');
 
 			var x = setInterval(function() {
-				var now = new Date().getTime();
-				var distance = untilDate - now;
-
-				if (distance < 0) {
+				if (remainingSeconds <= 0) {
 					clearInterval(x);
-					// If the date is in the past, maybe show 00:00:00:00 or reload
 					$days.text('00');
 					$hours.text('00');
 					$mins.text('00');
 					$secs.text('00');
-					// location.reload(); 
+					location.reload(); 
 					return;
 				}
 
-				var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-				var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-				var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-				var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+				var days = Math.floor(remainingSeconds / (60 * 60 * 24));
+				var hours = Math.floor((remainingSeconds % (60 * 60 * 24)) / (60 * 60));
+				var minutes = Math.floor((remainingSeconds % (60 * 60)) / 60);
+				var seconds = Math.floor(remainingSeconds % 60);
 
 				$days.text(days < 10 ? '0' + days : days);
 				$hours.text(hours < 10 ? '0' + hours : hours);
 				$mins.text(minutes < 10 ? '0' + minutes : minutes);
 				$secs.text(seconds < 10 ? '0' + seconds : seconds);
+				
+				remainingSeconds--;
 			}, 1000);
 		});
 	});
