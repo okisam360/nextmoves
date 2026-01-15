@@ -16,11 +16,11 @@ $current_timestamp = current_time('timestamp');
 $remaining_seconds = $unlock_timestamp - $current_timestamp;
 ?>
 
-<div class="locked-overlay">
-    <div class="q-lock-content text-neutral-00 text-center">
+<div   class="locked-overlay">
+    <div id="newsletter"  class="q-lock-content text-neutral-00 text-center">
         <h2 class="h1-semibold mb-30">Nuevo contenido en</h2>
 
-        <div class="q-lock-countdown mb-40" data-remaining="<?php echo esc_attr($remaining_seconds); ?>">
+        <div class="q-lock-countdown js-countdown mb-40" data-remaining="<?php echo esc_attr($remaining_seconds); ?>">
                 <div class="countdown-item">
                     <span class="countdown-value h1-semibold" data-days>00</span>
                     <span class="countdown-label body-l-regular">Días</span>
@@ -42,7 +42,7 @@ $remaining_seconds = $unlock_timestamp - $current_timestamp;
                 </div>
             </div>
 
-            <form class="q-lock-form mb-30">
+            <form  class="q-lock-form mb-30">
                 <div class="subscription-input-group">
                     <div class="input-with-icon">
                         <!-- Email Svg -->

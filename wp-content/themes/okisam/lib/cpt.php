@@ -348,7 +348,7 @@ function okisam_check_unlock_date($date_string) {
     }
 
     $unlock_time = date('Y-m-d H:i:s', $timestamp);
-    print_r($current_time);
+    // print_r($current_time);
     return $current_time >= $unlock_time;
 }
 

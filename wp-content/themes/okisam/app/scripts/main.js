@@ -150,13 +150,13 @@
 		}
 	});
 
-	// Countdown for locked quincenas
+	// Unified Countdown logic (Header & Locked Quincenas)
 	$(document).ready(function() {
-		$('.q-lock-countdown').each(function() {
+		$('.js-countdown').each(function() {
 			var $countdown = $(this);
 			var remainingSeconds = parseInt($countdown.data('remaining'));
 			
-			if (isNaN(remainingSeconds)) return;
+			if (isNaN(remainingSeconds) || remainingSeconds < 0) return;
 
 			var $days = $countdown.find('[data-days]');
 			var $hours = $countdown.find('[data-hours]');
