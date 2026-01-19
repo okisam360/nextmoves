@@ -8,11 +8,12 @@ $image = isset($module['graphic_image']) ? $module['graphic_image'] : '';
 $desc = isset($module['graphic_desc']) ? $module['graphic_desc'] : '';
 $source = isset($module['graphic_source']) ? $module['graphic_source'] : '';
 $color = isset($module['graphic_color']) ? $module['graphic_color'] : 'default';
+$size = isset($module['graphic_size']) ? $module['graphic_size'] : '1x1';
 
 $image_url = is_array($image) ? $image['url'] : $image;
 ?>
 
-<div class="module module-grafico module-color-<?php echo esc_attr($color); ?>">
+<div class="module module-grafico module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>">
 	<?php if ($image_url): ?>
 		<div class="module-image">
 			<img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($desc); ?>">

@@ -8,7 +8,7 @@ $text = isset($module['quote_text']) ? $module['quote_text'] : '';
 $author = isset($module['quote_author']) ? $module['quote_author'] : '';
 $source = isset($module['quote_source']) ? $module['quote_source'] : '';
 $color = isset($module['quote_color']) ? $module['quote_color'] : 'default';
-$size = isset($module['quote_size']) ? $module['quote_size'] : 'medium';
+$size = isset($module['quote_size']) ? $module['quote_size'] : '1x1';
 ?>
 
 <div class="module module-quote module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>">

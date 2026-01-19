@@ -8,7 +8,7 @@ $title = isset($module['video_entrevista_title']) ? $module['video_entrevista_ti
 $url = isset($module['video_entrevista_url']) ? $module['video_entrevista_url'] : '';
 $thumb = isset($module['video_entrevista_thumb']) ? $module['video_entrevista_thumb'] : '';
 $person_role = isset($module['video_entrevista_person_role']) ? $module['video_entrevista_person_role'] : '';
-$size = isset($module['video_entrevista_size']) ? $module['video_entrevista_size'] : 'medium';
+$size = isset($module['video_entrevista_size']) ? $module['video_entrevista_size'] : '1x1';
 
 $thumb_url = is_array($thumb) ? $thumb['url'] : $thumb;
 ?>

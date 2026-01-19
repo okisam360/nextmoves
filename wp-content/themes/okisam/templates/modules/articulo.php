@@ -39,13 +39,14 @@ if ($date) {
 		$date = ucfirst($date); // Ensure first letter is capitalized (e.g., Feb)
 	}
 }
+$size = isset($module['article_size']) ? $module['article_size'] : '1x1';
 
 $image_url = is_array($image) ? $image['url'] : $image;
 $author_image_url = is_array($author_image) ? $author_image['url'] : $author_image;
 $modal_id = 'modal-article-' . uniqid();
 ?>
 
-<div class="module module-articulo module-color-<?php echo esc_attr($color); ?>">
+<div class="module module-articulo module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>">
 	<?php if ($image_url): ?>
 		<div class="module-image">
 			<img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($title); ?>">

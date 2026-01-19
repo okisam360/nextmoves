@@ -8,7 +8,7 @@ $title = isset($module['video_sumario_title']) ? $module['video_sumario_title'] 
 $url = isset($module['video_sumario_url']) ? $module['video_sumario_url'] : '';
 $thumb = isset($module['video_sumario_thumb']) ? $module['video_sumario_thumb'] : '';
 $desc = isset($module['video_sumario_desc']) ? $module['video_sumario_desc'] : '';
-$size = isset($module['video_sumario_size']) ? $module['video_sumario_size'] : 'medium';
+$size = isset($module['video_sumario_size']) ? $module['video_sumario_size'] : '1x1';
 
 $thumb_url = is_array($thumb) ? $thumb['url'] : $thumb;
 ?>
