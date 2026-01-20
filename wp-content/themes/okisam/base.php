@@ -23,7 +23,7 @@
             <button class="modal-video-close" aria-label="Cerrar video">&times;</button>
             <div class="modal-video-box">
                 <div class="video-responsive-container">
-                    <!-- Iframe will be injected here -->
+                    <div id="player-container"></div>
                 </div>
             </div>
         </div>
