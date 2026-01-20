@@ -235,4 +235,17 @@
 		}
 	});
 
+	// Check for post in URL on load and open the corresponding modal
+	var urlParams = new URLSearchParams(window.location.search);
+	var cardId = urlParams.get('post');
+	if (cardId) {
+		// Use a slight timeout to ensure everything is rendered
+		setTimeout(function() {
+			var $targetBtn = $('.open-article-modal[data-post="' + cardId + '"]');
+			if ($targetBtn.length) {
+				$targetBtn.trigger('click');
+			}
+		}, 500);
+	}
+
 })(jQuery);

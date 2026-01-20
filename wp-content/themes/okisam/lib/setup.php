@@ -15,6 +15,15 @@ function setup() {
 }
 add_action('after_setup_theme', __NAMESPACE__ . '\\setup');
 
+/**
+ * Register custom query variables
+ */
+function query_vars($vars) {
+  $vars[] = 'post';
+  return $vars;
+}
+add_filter('query_vars', __NAMESPACE__ . '\\query_vars');
+
 // Theme assets
 
 function assets() {

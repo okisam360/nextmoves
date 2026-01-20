@@ -10,6 +10,18 @@ $content = isset($module['article_content']) ? $module['article_content'] : '';
 $image = isset($module['article_image']) ? $module['article_image'] : '';
 $color = isset($module['article_color']) ? $module['article_color'] : 'default';
 $url = isset($module['article_url']) ? $module['article_url'] : '';
+$card_id = isset($module['card_id']) ? $module['card_id'] : '';
+
+// If no card_id is provided, use a sanitized version of the title
+if (!$card_id && $title) {
+	$card_id = sanitize_title($title);
+}
+
+// Prepare share URL with post parameter
+$share_url = $url ? $url : home_url('/');
+if ($card_id) {
+    $share_url = add_query_arg('post', $card_id, $share_url);
+}
 
 // Modal fields
 $author_name = isset($module['article_author_name']) ? $module['article_author_name'] : '';
@@ -50,7 +62,7 @@ $modal_id = 'modal-article-' . uniqid();
 		<?php endif; ?>
 
 		<div class="module-action">
-			<button class="btn-cta open-article-modal" data-modal="<?php echo esc_attr($modal_id); ?>">Leer más</button>
+			<button class="btn-cta open-article-modal" data-modal="<?php echo esc_attr($modal_id); ?>" data-post="<?php echo esc_attr($card_id); ?>">Leer más</button>
 		</div>
 	</div>
 </div>
@@ -104,14 +116,14 @@ $modal_id = 'modal-article-' . uniqid();
 
 			<div class="modal-article-footer">
 				<div class="modal-article-share">
-					<a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo urlencode($url); ?>" target="_blank" rel="noopener" class="share-icon">
+					<a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo urlencode($share_url); ?>" target="_blank" rel="noopener" class="share-icon">
 						<svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect width="41.4288" height="41.441" rx="20.7144" fill="#EF5A35"/>
 						<path d="M10.0942 13.7018C9.56691 13.2123 9.30469 12.6063 9.30469 11.8853C9.30469 11.1643 9.56831 10.5317 10.0942 10.0407C10.6215 9.55114 11.3002 9.30566 12.1318 9.30566C12.9633 9.30566 13.6154 9.55114 14.1413 10.0407C14.6686 10.5302 14.9308 11.1461 14.9308 11.8853C14.9308 12.6246 14.6672 13.2123 14.1413 13.7018C13.614 14.1914 12.9451 14.4369 12.1318 14.4369C11.3184 14.4369 10.6215 14.1914 10.0942 13.7018ZM14.4877 16.5101V31.5194H9.7464V16.5101H14.4877Z" fill="#171A1C"/>
 						<path d="M30.272 17.9938C31.3055 19.116 31.8216 20.6562 31.8216 22.6173V31.2553H27.3188V23.226C27.3188 22.2371 27.0621 21.4684 26.5503 20.9213C26.0384 20.3743 25.3485 20.0993 24.4847 20.0993C23.6209 20.0993 22.9309 20.3729 22.419 20.9213C21.9072 21.4684 21.6506 22.2371 21.6506 23.226V31.2553H17.1211V16.4691H21.6506V18.4301C22.1091 17.7764 22.7276 17.2602 23.5045 16.8801C24.2813 16.4999 25.155 16.3105 26.1268 16.3105C27.8573 16.3105 29.2399 16.8716 30.272 17.9938Z" fill="#171A1C"/>
 						</svg>
 					</a>
-					<a href="https://twitter.com/intent/tweet?url=<?php echo urlencode($url); ?>" target="_blank" rel="noopener" class="share-icon">
+					<a href="https://twitter.com/intent/tweet?url=<?php echo urlencode($share_url); ?>" target="_blank" rel="noopener" class="share-icon">
 						<svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect width="41.4288" height="41.4409" rx="20.7144" fill="#EF5A35"/>
 						<path d="M9.36219 9.30566L18.5923 21.6497L9.30469 31.6863H11.3956L19.5276 22.8996L26.0975 31.6863H33.2114L23.4625 18.6479L32.1078 9.30566H30.017L22.5286 17.3981L16.4776 9.30566H9.36357H9.36219ZM12.4361 10.8459H15.7035L30.1348 30.1461H26.8673L12.4361 10.8459Z" fill="#171A1C"/>
@@ -125,13 +137,13 @@ $modal_id = 'modal-article-' . uniqid();
 						<path d="M26.8442 16.3378C27.701 16.3378 28.3994 15.6407 28.3994 14.7822C28.3994 13.9237 27.7025 13.2266 26.8442 13.2266C25.986 13.2266 25.2891 13.9237 25.2891 14.7822C25.2891 15.6407 25.986 16.3378 26.8442 16.3378Z" fill="#171A1C"/>
 						</svg>
 					</a>
-					<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($url); ?>" target="_blank" rel="noopener" class="share-icon">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($share_url); ?>" target="_blank" rel="noopener" class="share-icon">
 						<svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect width="41.4288" height="41.4409" rx="20.7144" fill="#EF5A35"/>
 						<path d="M23.7611 12.2241V16.5852H29.1544L28.3004 22.4598H23.7611V35.9948C22.851 36.121 21.9198 36.187 20.9747 36.187C19.8837 36.187 18.8123 36.1 17.769 35.9317V22.4598H12.7949V16.5852H17.769V11.2492C17.769 7.93874 20.4516 5.25391 23.7625 5.25391V5.25671C23.7723 5.25671 23.7807 5.25391 23.7905 5.25391H29.1558V10.3346H25.65C24.6081 10.3346 23.7625 11.1804 23.7625 12.2227L23.7611 12.2241Z" fill="#171A1C"/>
 						</svg>
 					</a>
-					<a href="https://api.whatsapp.com/send?text=<?php echo urlencode($url); ?>" target="_blank" rel="noopener" class="share-icon">
+					<a href="https://api.whatsapp.com/send?text=<?php echo urlencode($share_url); ?>" target="_blank" rel="noopener" class="share-icon">
 						<svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect width="41.4288" height="41.4409" rx="20.7144" fill="#EF5A35"/>
 						<path d="M25.0828 26.6106C19.9601 26.6106 15.7924 22.4403 15.791 17.3161C15.7924 16.0172 16.8498 14.9609 18.1455 14.9609C18.2787 14.9609 18.4105 14.9722 18.5368 14.9946C18.8144 15.0409 19.0781 15.1349 19.3207 15.2766C19.3557 15.2976 19.3796 15.3313 19.3852 15.3706L19.9265 18.7834C19.9335 18.8241 19.9209 18.8633 19.8942 18.8928C19.5955 19.2238 19.2141 19.4623 18.7892 19.5816L18.5844 19.6391L18.6616 19.8368C19.3599 21.6155 20.7819 23.0365 22.5614 23.7379L22.7592 23.8164L22.8166 23.6116C22.9358 23.1866 23.1742 22.805 23.5052 22.5062C23.529 22.4838 23.5613 22.4726 23.5935 22.4726C23.6005 22.4726 23.6076 22.4726 23.616 22.474L27.0278 23.0155C27.0685 23.0225 27.1021 23.0449 27.1232 23.08C27.2634 23.3226 27.3574 23.5877 27.405 23.8655C27.4275 23.9889 27.4373 24.1194 27.4373 24.2555C27.4373 25.553 26.3813 26.6092 25.0828 26.6106Z" fill="#171A1C"/>
