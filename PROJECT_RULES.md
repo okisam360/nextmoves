@@ -37,8 +37,7 @@ Organización de los campos principales usados por el CPT `panel` (Etiqueta / No
 | Intro / Párrafo inicial | `panel_intro` | Área de texto |
 | Imagen del Panel | `panel_image` | Imagen |
 | Número de Entrega | `panel_report_delivery` | Texto |
-| Video Introductorio | `panel_video_intro` | URL |
-| Video Introductorio (alternativo) | `panel_video` | URL |
+| Video Introductorio | `panel_video` | URL |
 | Título de Video | `panel_title_video` | Texto |
 | Imagen del Video | `panel_video_thumbnail` | Imagen |
 | Día de desbloqueo Q1 | `panel_q1_unlock_day` | Selección |

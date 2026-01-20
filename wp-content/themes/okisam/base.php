@@ -15,6 +15,20 @@
     </div>
     <?php get_template_part('templates/footer'); ?>
     <?php do_action('get_footer'); ?>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="modal-video" style="display: none;">
+        <div class="modal-video-overlay"></div>
+        <div class="modal-video-container">
+            <button class="modal-video-close" aria-label="Cerrar video">&times;</button>
+            <div class="modal-video-box">
+                <div class="video-responsive-container">
+                    <!-- Iframe will be injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <?php wp_footer(); ?>
 </body>
 </html>
