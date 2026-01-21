@@ -17,7 +17,7 @@ $thumb_url = is_array($thumb) ? $thumb['url'] : $thumb;
 	<?php if ($thumb_url): ?>
 		<div class="module-thumbnail" style="background-image: url('<?php echo esc_url($thumb_url); ?>');">
 			<?php if ($url): ?>
-				<a href="<?php echo esc_url($url); ?>" class="video-play-link" target="_blank" rel="noopener">
+				<a href="#" class="video-play-link js-video-modal-trigger" data-video-url="<?php echo esc_url($url); ?>" rel="noopener">
 					<span class="play-icon">▶</span>
 				</a>
 			<?php endif; ?>

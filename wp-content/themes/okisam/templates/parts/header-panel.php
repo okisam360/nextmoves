@@ -24,8 +24,9 @@ $panel_subtitle = get_field('panel_subtitle', $panel_id);
 $panel_intro = get_field('panel_intro', $panel_id);
 $panel_report_delivery = get_field('panel_report_delivery', $panel_id);
 $panel_image = get_field('panel_image', $panel_id);
-$panel_video_title = get_field('panel_video_title', $panel_id);
+$panel_video_title = get_field('panel_title_video', $panel_id);
 $panel_video_thumbnail = get_field('panel_video_thumbnail', $panel_id);
+$panel_video_url = get_field('panel_video', $panel_id);
 
 // Fallback images if fields are empty
 $header_image = $panel_image ? $panel_image['url'] : $theme_uri . '/app/images/tmp/e11a6642c6aa3136891018c085b974f1db587f0a.jpg';
@@ -62,7 +63,7 @@ $video_play = $theme_uri . '/app/icons/video-play.svg';
 		<div class="video-card">
 			<h3 class="h2-bold title-video text-neutral-00"><?php echo esc_html($panel_video_title ? $panel_video_title : ''); ?></h3>
 
-			<button class="video-play" aria-label="Reproducir video">
+			<button class="video-play js-video-modal-trigger" aria-label="Reproducir video" data-video-url="<?php echo esc_url($panel_video_url); ?>">
 				<img src="<?php echo esc_url($video_play); ?>" alt="Play icon">
 			</button>
 		</div>

@@ -1,5 +1,14 @@
 (function($) {
 
+	let player;
+	let endCheckInterval;
+
+	// Load YouTube API
+	const tag = document.createElement('script');
+	tag.src = "https://www.youtube.com/iframe_api";
+	const firstScriptTag = document.getElementsByTagName('script')[0];
+	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
 	$(document).ready(function() {
 		var widthBody = $(window).width();
 		if (widthBody < 1200) { 
@@ -208,6 +217,79 @@
 		});
 	});
 
+	// Video Modal Logic
+	function getYouTubeId(url) {
+		const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+		const match = url.match(regExp);
+		return (match && match[2].length === 11) ? match[2] : null;
+	}
+
+	function closeVideoModal() {
+		clearInterval(endCheckInterval);
+		const $modal = $('#video-modal');
+		$modal.fadeOut(300, function() {
+			if (player && player.destroy) {
+				player.destroy();
+			}
+			$modal.find('.video-responsive-container').html('<div id="player-container"></div>');
+		});
+		$('body').removeClass('modal-open');
+	}
+
+	$('.js-video-modal-trigger').on('click', function(e) {
+		e.preventDefault();
+		const videoUrl = $(this).data('video-url');
+		const videoId = getYouTubeId(videoUrl);
+
+		if (!videoId) return;
+
+		const $modal = $('#video-modal');
+		
+		if (typeof YT !== 'undefined' && YT.Player) {
+			player = new YT.Player('player-container', {
+				videoId: videoId,
+				playerVars: {
+					'autoplay': 1,
+					'controls': 0,
+					'modestbranding': 1,
+					'rel': 0,
+					'playsinline': 1,
+					'enablejsapi': 1,
+					'origin': window.location.origin
+				},
+				events: {
+					'onStateChange': function(event) {
+						if (event.data === YT.PlayerState.PLAYING) {
+							endCheckInterval = setInterval(function() {
+								const duration = player.getDuration();
+								const currentTime = player.getCurrentTime();
+								if (duration > 0 && (duration - currentTime) <= 1) {
+									closeVideoModal();
+								}
+							}, 200);
+						} else if (event.data === YT.PlayerState.ENDED) {
+							closeVideoModal();
+						} else {
+							clearInterval(endCheckInterval);
+						}
+					}
+				}
+			});
+		} else {
+			// Fallback if API not loaded
+			const $container = $('#player-container');
+			const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`;
+			$container.replaceWith(`<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`);
+		}
+		
+		$modal.fadeIn(300);
+		$('body').addClass('modal-open');
+	});
+
+	$('.modal-video-close, .modal-video-overlay').on('click', function() {
+		closeVideoModal();
+	});
+
 	// Article Modal Logic
 	$('.open-article-modal').on('click', function(e) {
 		e.preventDefault();
@@ -251,6 +333,10 @@
 	$(document).on('keydown', function(e) {
 		if (e.key === "Escape") {
 			$('.modal-article:visible').fadeOut(300);
+			const $videoModal = $('#video-modal:visible');
+			if ($videoModal.length) {
+				closeVideoModal();
+			}
 			$('body').removeClass('modal-open');
 		}
 	});

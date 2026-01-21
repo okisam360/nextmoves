@@ -15,7 +15,13 @@ $thumb_url = is_array($thumb) ? $thumb['url'] : $thumb;
 
 <div class="module module-video-sumario module-size-<?php echo esc_attr($size); ?>">
 	<?php if ($thumb_url): ?>
-		<div class="module-thumbnail" style="background-image: url('<?php echo esc_url($thumb_url); ?>');"></div>
+		<div class="module-thumbnail" style="background-image: url('<?php echo esc_url($thumb_url); ?>');">
+			<?php if ($url): ?>
+				<a href="#" class="video-play-link js-video-modal-trigger" data-video-url="<?php echo esc_url($url); ?>" rel="noopener">
+					<span class="play-icon">▶</span>
+				</a>
+			<?php endif; ?>
+		</div>
 	<?php endif; ?>
 	
 	<div class="module-content">
