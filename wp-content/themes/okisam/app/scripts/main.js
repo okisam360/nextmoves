@@ -216,14 +216,34 @@
 		
 		// Append to body to avoid clipping issues with transformed parent containers
 		$modal.appendTo('body');
-
-		$modal.fadeIn(300);
+		
+		// Show modal immediately (no animation delay for blur)
+		$modal.css({
+			display: 'flex',
+			opacity: 0
+		});
+		
+		// Apply blur immediately, then fade in
 		$('body').addClass('modal-open'); // Prevent scroll
+		
+		// Use requestAnimationFrame for smoother animation
+		requestAnimationFrame(function() {
+			$modal.css({
+				transition: 'opacity 0.3s ease',
+				opacity: 1
+			});
+		});
 	});
 
 	$('.modal-article-close, .modal-article-overlay').on('click', function() {
 		var $modal = $(this).closest('.modal-article');
-		$modal.fadeOut(300);
+		$modal.css({
+			transition: 'opacity 0.3s ease',
+			opacity: 0
+		});
+		setTimeout(function() {
+			$modal.css('display', 'none');
+		}, 300);
 		$('body').removeClass('modal-open');
 	});
 

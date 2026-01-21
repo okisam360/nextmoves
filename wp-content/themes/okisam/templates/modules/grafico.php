@@ -15,9 +15,7 @@ $image_url = is_array($image) ? $image['url'] : $image;
 
 <div class="module module-grafico module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>">
 	<?php if ($image_url): ?>
-		<div class="module-image">
-			<img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($desc); ?>">
-		</div>
+		<div class="module-image" style="background-image: url('<?php echo esc_url($image_url); ?>');"></div>
 	<?php endif; ?>
 	
 	<div class="module-content">
