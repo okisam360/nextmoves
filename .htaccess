@@ -1,0 +1,31 @@
+
+# BEGIN Custom Rewrites
+# Redirección de app/uploads a wp-content/uploads
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^app/uploads/(.*)$ /wp-content/uploads/$1 [L]
+</IfModule>
+# END Custom Rewrites
+
+# BEGIN WordPress
+# Las directivas (líneas) entre «BEGIN WordPress» y «END WordPress» son
+# generadas dinámicamente y solo deberían ser modificadas mediante filtros de WordPress.
+# Cualquier cambio en las directivas que hay entre esos marcadores serán sobrescritas.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteRule ^app/styles/(.*) /wp-content/themes/okisam/app/styles/$1 [QSA,L]
+RewriteRule ^app/scripts/(.*) /wp-content/themes/okisam/app/scripts/$1 [QSA,L]
+RewriteRule ^app/fonts/(.*) /wp-content/themes/okisam/app/fonts/$1 [QSA,L]
+RewriteRule ^app/images/(.*) /wp-content/themes/okisam/app/images/$1 [QSA,L]
+RewriteRule ^app/cache/(.*) /wp-content/cache/$1 [QSA,L]
+RewriteRule ^app/components/(.*) /wp-content/plugins/$1 [QSA,L]
+RewriteRule ^app/uploads/(.*) /wp-content/uploads/$1 [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress

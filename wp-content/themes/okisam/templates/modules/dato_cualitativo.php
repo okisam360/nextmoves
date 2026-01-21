@@ -8,7 +8,7 @@ $value = isset($module['data_value']) ? $module['data_value'] : '';
 $label = isset($module['data_label']) ? $module['data_label'] : '';
 $note = isset($module['data_note']) ? $module['data_note'] : '';
 $color = isset($module['data_color']) ? $module['data_color'] : 'default';
-$size = isset($module['data_size']) ? $module['data_size'] : 'medium';
+$size = isset($module['data_size']) ? $module['data_size'] : '1x1';
 ?>
 
 <div class="module module-dato-cualitativo module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>">
