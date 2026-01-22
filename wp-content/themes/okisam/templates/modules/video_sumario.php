@@ -16,11 +16,11 @@ $thumb_url = is_array($thumb) ? $thumb['url'] : $thumb;
 <div class="module module-video-sumario module-size-<?php echo esc_attr($size); ?>">
 	<?php if ($thumb_url): ?>
 		<div class="module-thumbnail" style="background-image: url('<?php echo esc_url($thumb_url); ?>');">
-			<?php if ($url): ?>
+			<!-- <?php if ($url): ?>
 				<a href="#" class="video-play-link js-video-modal-trigger" data-video-url="<?php echo esc_url($url); ?>" rel="noopener">
 					<span class="play-icon">▶</span>
 				</a>
-			<?php endif; ?>
+			<?php endif; ?> -->
 		</div>
 	<?php endif; ?>
 	
@@ -30,7 +30,7 @@ $thumb_url = is_array($thumb) ? $thumb['url'] : $thumb;
 		<?php endif; ?>
 		
 		<?php if ($url): ?>
-			<a href="<?php echo esc_url($url); ?>" class="video-play-link" target="_blank" rel="noopener">
+			<a href="#" class="video-play-link js-video-modal-trigger" data-video-url="<?php echo esc_url($url); ?>" rel="noopener">
 				<div class="play-icon-wrapper">
 					<svg class="play-icon-circle-text" width="200" height="200" viewBox="0 0 200 200">
 						<defs>

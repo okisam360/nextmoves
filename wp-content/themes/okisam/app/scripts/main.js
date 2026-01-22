@@ -37,44 +37,50 @@
 	}); 
 
 	$(document).ready(function() {
-	  $('#slider-casos-exito').lightSlider({
-	      loop:false,
-	      item:2,
-	      slideMove:2,
-	      easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
-	      speed:800,
-	      slideEndAnimation: false,
-	      responsive : [
-	          {
-	              breakpoint:768,
-	              settings: {
-	                  item:1,
-	                  slideMove:1
-	                }
-	          }
-	      ]
-	  });  
+	  var $sliderCasos = $('#slider-casos-exito');
+	  if ($sliderCasos.length && typeof $.fn.lightSlider !== 'undefined') {
+	    $sliderCasos.lightSlider({
+	        loop:false,
+	        item:2,
+	        slideMove:2,
+	        easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
+	        speed:800,
+	        slideEndAnimation: false,
+	        responsive : [
+	            {
+	                breakpoint:768,
+	                settings: {
+	                    item:1,
+	                    slideMove:1
+	                  }
+	            }
+	        ]
+	    });
+	  }
 	});
 
 	$(document).ready(function() {
-	  $('#slider-opiniones').lightSlider({
-	      loop:false,
-	      // autoWidth:true,
-	      item:1,
-	      slideMove:1,
-	      easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
-	      speed:800,
-	      slideEndAnimation: false,
-	      responsive : [
-	          {
-	              breakpoint:768,
-	              settings: {
-	                  item:1,
-	                  slideMove:1
-	                }
-	          }
-	      ]
-	  });  
+	  var $sliderOpiniones = $('#slider-opiniones');
+	  if ($sliderOpiniones.length && typeof $.fn.lightSlider !== 'undefined') {
+	    $sliderOpiniones.lightSlider({
+	        loop:false,
+	        // autoWidth:true,
+	        item:1,
+	        slideMove:1,
+	        easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
+	        speed:800,
+	        slideEndAnimation: false,
+	        responsive : [
+	            {
+	                breakpoint:768,
+	                settings: {
+	                    item:1,
+	                    slideMove:1
+	                  }
+	            }
+	        ]
+	    });
+	  }
 	});
 
 	$('form .search-icon').on("click", function () {
@@ -296,48 +302,31 @@
 		var modalId = $(this).data('modal');
 		var $modal = $('#' + modalId);
 		
-		// Append to body to avoid clipping issues with transformed parent containers
-		$modal.appendTo('body');
-		
-		// Show modal immediately (no animation delay for blur)
-		$modal.css({
-			display: 'flex',
-			opacity: 0
-		});
-		
-		// Apply blur immediately, then fade in
-		$('body').addClass('modal-open'); // Prevent scroll
-		
-		// Use requestAnimationFrame for smoother animation
-		requestAnimationFrame(function() {
-			$modal.css({
-				transition: 'opacity 0.3s ease',
-				opacity: 1
-			});
-		});
+		// Show modal with fadeIn (blur is handled by CSS)
+		$modal.fadeIn(300);
+		$('body').addClass('modal-open');
 	});
 
 	$('.modal-article-close, .modal-article-overlay').on('click', function() {
 		var $modal = $(this).closest('.modal-article');
-		$modal.css({
-			transition: 'opacity 0.3s ease',
-			opacity: 0
+		$modal.fadeOut(300, function() {
+			$('body').removeClass('modal-open');
 		});
-		setTimeout(function() {
-			$modal.css('display', 'none');
-		}, 300);
-		$('body').removeClass('modal-open');
 	});
 
 	// Close on ESC
 	$(document).on('keydown', function(e) {
 		if (e.key === "Escape") {
-			$('.modal-article:visible').fadeOut(300);
+			var $modal = $('.modal-article:visible');
+			if ($modal.length) {
+				$modal.fadeOut(300, function() {
+					$('body').removeClass('modal-open');
+				});
+			}
 			const $videoModal = $('#video-modal:visible');
 			if ($videoModal.length) {
 				closeVideoModal();
 			}
-			$('body').removeClass('modal-open');
 		}
 	});
 
