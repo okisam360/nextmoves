@@ -1473,6 +1473,7 @@ padding: 8px 16px;
   justify-content: center;
   z-index: 10;
   pointer-events: all;
+  padding: 30px;
 }
 
 .q-lock-content {
