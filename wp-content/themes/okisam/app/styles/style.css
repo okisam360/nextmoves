@@ -134,6 +134,7 @@ color: #333333;
 }
 main {
 background: var(--neutral-05, #F4F6F9);
+padding-bottom: 72px; 
 }
 
 /* === TIPOGRAFÍAS DE PROYECTO === */
@@ -706,7 +707,7 @@ padding: 8px 16px;
 
 .q1-container,
 .q2-container {
-  margin: 40px 0;
+  margin: 0;
 }
 
 /* Grid layout para módulos (Q1/Q2) - Sistema 3x3 */
@@ -1438,6 +1439,13 @@ padding: 8px 16px;
 .q2-container.locked .modules-grid {
   filter: blur(8px);
   opacity: 0.5;
+}
+
+.q1-container.locked, 
+.q2-container.locked {
+  position: relative;
+  height: 1540px;
+  margin: 0px;
 }
 
 .q1-container.locked, 
