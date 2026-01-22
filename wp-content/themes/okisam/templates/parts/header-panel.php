@@ -31,7 +31,6 @@ $panel_video_url = get_field('panel_video', $panel_id);
 // Fallback images if fields are empty
 $header_image = $panel_image ? $panel_image['url'] : $theme_uri . '/app/images/tmp/e11a6642c6aa3136891018c085b974f1db587f0a.jpg';
 $video_bg = $panel_video_thumbnail ? $panel_video_thumbnail['url'] : $theme_uri . '/app/images/tmp/95044467b2e4e5101cfa5e345d4455db03865474.jpg';
-$video_play = $theme_uri . '/app/icons/video-play.svg';
 ?>
 
 <div class="panel-header">
@@ -63,9 +62,23 @@ $video_play = $theme_uri . '/app/icons/video-play.svg';
 		<div class="video-card">
 			<h3 class="h2-bold title-video text-neutral-00"><?php echo esc_html($panel_video_title ? $panel_video_title : ''); ?></h3>
 
-			<button class="video-play js-video-modal-trigger" aria-label="Reproducir video" data-video-url="<?php echo esc_url($panel_video_url); ?>">
-				<img src="<?php echo esc_url($video_play); ?>" alt="Play icon">
-			</button>
+			<?php if ($panel_video_url): ?>
+				<a href="#" class="video-play-link js-video-modal-trigger" data-video-url="<?php echo esc_url($panel_video_url); ?>" rel="noopener">
+					<div class="play-icon-wrapper">
+						<svg class="play-icon-circle-text" width="200" height="200" viewBox="0 0 200 200">
+							<defs>
+								<path id="circle-path-panel" d="M 100, 100 m -45, 0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0" />
+							</defs>
+							<text fill="#FFFFFF" font-family="Graphik, sans-serif" font-size="12.26" font-weight="500" line-height="100%" letter-spacing="0">
+								<textPath href="#circle-path-panel" startOffset="0%">
+									Mira el video | Mira el video | Mira el video | Mira el video |
+								</textPath>
+							</text>
+						</svg>
+						<span class="play-icon">▶</span>
+					</div>
+				</a>
+			<?php endif; ?>
 		</div>
 	</div>
 	<?php endif; ?>
