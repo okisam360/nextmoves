@@ -995,6 +995,38 @@ padding: 8px 16px;
 /* Quote Module Styles - Figma Design */
 .module-quote {
   border: 2px solid rgba(165, 174, 182, 1);
+  position: relative;
+}
+
+/* Quote - Blanco sin atribución: caballo-negro.png a la derecha */
+.module-quote.module-color-default.no-attribution,
+.module-quote.module-color-blanco.no-attribution {
+  background-image: url('../images/caballo-negro.png');
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
+/* Quote - Negro: pieza-de-ajedrez.png a la derecha e invertida */
+.module-quote.module-color-negro::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/pieza-de-ajedrez.png');
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: auto;
+  transform: scaleX(-1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.module-quote.module-color-negro .module-content {
+  position: relative;
+  z-index: 1;
 }
 
 .module-quote .module-content {
@@ -1129,6 +1161,38 @@ padding: 8px 16px;
 .module-quote {
   border: 2px solid rgba(165, 174, 182, 1);
   box-shadow: none;
+  position: relative;
+}
+
+/* Quote - Blanco sin atribución: caballo-negro.png a la derecha */
+.module-quote.module-color-default.no-attribution,
+.module-quote.module-color-blanco.no-attribution {
+  background-image: url('../images/caballo-negro.png');
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
+/* Quote - Negro: pieza-de-ajedrez.png a la derecha e invertida */
+.module-quote.module-color-negro::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/pieza-de-ajedrez.png');
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: auto;
+  transform: scaleX(-1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.module-quote.module-color-negro .module-content {
+  position: relative;
+  z-index: 1;
 }
 
 .module-quote .module-content {
@@ -1204,11 +1268,35 @@ padding: 8px 16px;
 }
 
 /* Data module styles */
-/* .module-dato-cualitativo {
-  width: 472px;
-  height: 230px;
-  opacity: 1;
-} */
+.module-dato-cualitativo {
+  position: relative;
+}
+
+/* Dato cualitativo - Negro: pieza-de-ajedrez.png a la izquierda */
+.module-dato-cualitativo.module-color-negro {
+  background-image: url('../images/pieza-de-ajedrez.png');
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
+/* Dato cualitativo - Blanco: caballo-negro.png a la izquierda e invertida */
+.module-dato-cualitativo.module-color-default::before,
+.module-dato-cualitativo.module-color-blanco::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/caballo-negro.png');
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: auto;
+  transform: scaleX(-1);
+  pointer-events: none;
+  z-index: 0;
+}
 
 .module-dato-cualitativo .module-content {
   padding: 36px;
@@ -1218,6 +1306,8 @@ padding: 8px 16px;
   justify-content: flex-end;
   gap: 12px;
   height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .module-dato-cualitativo .data-value {
@@ -1233,6 +1323,10 @@ padding: 8px 16px;
   margin: 0;
 }
 
+.module-dato-cualitativo.module-color-negro .data-value {
+  color: var(--neutral-00);
+}
+
 .module-dato-cualitativo .data-label {
   font-family: 'Graphik', sans-serif;
   font-weight: 400;
@@ -1245,10 +1339,18 @@ padding: 8px 16px;
   margin: 0;
 }
 
+.module-dato-cualitativo.module-color-negro .data-label {
+  color: var(--neutral-00);
+}
+
 .module-dato-cualitativo .data-note {
   color: #666;
   font-size: 14px;
   margin: 0;
+}
+
+.module-dato-cualitativo.module-color-negro .data-note {
+  color: var(--neutral-20);
 }
 
 /* Article module styles - Same as Quote */
@@ -1284,6 +1386,43 @@ padding: 8px 16px;
     text-align: left;
     gap: 10px;
     height: 100%;
+}
+
+.module-articulo .article-info {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    opacity: 0.7;
+    margin-bottom: 8px;
+}
+
+.module-articulo .article-date,
+.module-articulo .article-read-time {
+    font-family: 'Graphik', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0;
+    vertical-align: middle;
+}
+
+.module-articulo .article-date {
+    color: #E6E8EA;
+}
+
+.module-articulo.module-color-negro .article-date {
+    color: #E6E8EA;
+}
+
+.module-articulo .article-read-time {
+    display: flex;
+    align-items: center;
+    color: #E6E8EA;
+}
+
+.module-articulo.module-color-negro .article-read-time {
+    color: #E6E8EA;
 }
 
 .module-articulo .article-title {
@@ -1406,8 +1545,8 @@ padding: 8px 16px;
 
 .module.module-color-negro,
 .module-color-negro {
-  background-color: rgba(23, 26, 28, 1) !important;
-  border: 2px solid rgba(23, 26, 28, 1);
+  background-color: var(--neutral-95) !important;
+  border: 2px solid var(--neutral-95) !important;
 }
 
 /* Compatibilidad con valores antiguos (deprecated) */

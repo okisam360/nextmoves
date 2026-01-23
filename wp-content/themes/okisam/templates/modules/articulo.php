@@ -55,6 +55,24 @@ $modal_id = 'modal-article-' . uniqid();
 	<?php endif; ?>
 
 	<div class="module-content">
+		<?php if ($date || $read_time): ?>
+			<div class="article-info">
+				<?php if ($date): ?>
+					<span class="article-date"><?php echo esc_html($date); ?></span>
+				<?php endif; ?>
+				
+				<?php if ($read_time): ?>
+					<span class="article-read-time">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+							<circle cx="12" cy="12" r="10"></circle>
+							<polyline points="12 6 12 12 16 14"></polyline>
+						</svg>
+						<?php echo esc_html($read_time); ?> min leído
+					</span>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
+		
 		<?php if ($title): ?>
 			<h3 class="article-title"><?php echo esc_html($title); ?></h3>
 		<?php endif; ?>
@@ -109,7 +127,7 @@ $modal_id = 'modal-article-' . uniqid();
 								<circle cx="12" cy="12" r="10"></circle>
 								<polyline points="12 6 12 12 16 14"></polyline>
 							</svg>
-							<?php echo esc_html($read_time); ?>
+							<?php echo esc_html($read_time); ?> min leído
 						</span>
 					<?php endif; ?>
 				</div>
