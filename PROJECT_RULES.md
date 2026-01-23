@@ -140,3 +140,16 @@ Se recomienda usar las variables CSS definidas en `okisam/app/styles/style.css` 
 
 Para especificaciones completas y overrides móviles, ver: [docs/TIPOGRAFIAS.md](docs/TIPOGRAFIAS.md)
 
+
+## Tracking y Analytics (GTM)
+
+Se han implementado atributos `data-*` estandarizados en todo el sitio para facilitar el seguimiento mediante Google Tag Manager sin dependencia del DOM.
+
+### Convenciones Technical Tracking
+- **Contexto:** Todos los módulos y contenedores de fase incluyen `data-phase="q1|q2"` y `data-unlocked="true|false"`.
+- **Mapeo de Módulos:** Cada componente de contenido flexible debe llevar `data-module-type` (ej: `article`, `video-interview`, `quote`).
+- **CTAs:** Los botones de conversión críticos usan `data-cta="subscription"`.
+- **Vídeos:** Cualquier trigger de vídeo debe incluir `data-video="true"`.
+
+Para la documentación técnica completa de los atributos disponibles, ver: [docs/GTM_DATA_ATTRIBUTES.md](docs/GTM_DATA_ATTRIBUTES.md)
+
