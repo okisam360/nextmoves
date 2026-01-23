@@ -137,6 +137,10 @@ background: var(--neutral-05, #F4F6F9);
 padding-bottom: 72px; 
 }
 
+main:has(.q2-container.locked) {
+  padding-bottom: 0px;
+}
+
 /* === TIPOGRAFÍAS DE PROYECTO === */
 .h1-semibold {
 font-family: 'Graphik', sans-serif;
