@@ -137,6 +137,10 @@ background: var(--neutral-05, #F4F6F9);
 padding-bottom: 72px; 
 }
 
+main:has(.q2-container.locked) {
+  padding-bottom: 0px;
+}
+
 /* === TIPOGRAFÍAS DE PROYECTO === */
 .h1-semibold {
 font-family: 'Graphik', sans-serif;
@@ -232,22 +236,11 @@ vertical-align: middle;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100vw;
-  max-width: 1920px;
+  width: 100%;
   min-height: 455px;
   background: var(--neutral-95, #171A1C);
-  padding: 0;
+  padding: 40px 0;
   margin: 0 auto;
-}
-.hero-header {
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-width:100%;
-min-height:455px;
-background:var(--neutral-95,#171A1C);
-padding:40px 0;
 }
 
 .hero-header .box,
@@ -406,6 +399,7 @@ height: 100%;
 position: relative;
 transform: none;
 margin: 0;
+text-align: center;
 }
 
 .panel-video .video-play-link {
@@ -428,10 +422,10 @@ body.home .main {
     padding: 0;
 }
 .panel-header {
-  padding: 0;
+  padding: 16px;
   margin: 0;
   max-width: 100%;
-  gap: 0px;
+  gap: 24px;
 }
 .panel-top{flex-direction:column;align-items:stretch; min-height: 0; height: auto;}
 .panel-band{
@@ -474,10 +468,20 @@ body.home .main {
   padding: 50px 24px;
   gap: 40px;
 }
-
-.video-card{height:220px; gap: 15px;}
-.panel-info .display-xl-bold{font-size: 56px; line-height: 1.1; text-align: left;}
+.panel-video{
+  height: 440px;
+  border-radius: 8px;
+}
+.video-card{
+  /* height:220px;  */
+  gap: 15px;
+  padding: 24px;
+}
+.panel-info .display-xl-bold{font-size: 40px; line-height: 1.1; text-align: left;}
 .panel-info .h3-regular{font-weight:400;font-size:22px;line-height:1.3;text-align:left}
+
+
+
 }
 
 
@@ -614,6 +618,26 @@ padding: 8px 16px;
 .site-footer a:hover {
   color: var(--neutral-00);
   text-decoration: underline;
+}
+.footer-container{
+  max-width:1482px;
+  margin: auto;
+}
+
+/* Tablet & Mobile Footer adjustments */
+@media (max-width: 991px) {
+  .site-footer .footer-container {
+    flex-direction: column !important;
+    gap: 32px;
+    padding: 40px 0;
+  }
+  .site-footer .footer-logo img {
+    max-width: 140px;
+    margin: 0 auto;
+  }
+  .site-footer .footer-social-logos {
+    padding: 0 !important;
+  }
 }
 .footer-inner {
   display: flex;
