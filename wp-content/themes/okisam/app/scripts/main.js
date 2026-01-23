@@ -234,6 +234,10 @@
 
 			// Define the success callback that ActiveCampaign calls
 			window._show_thank_you = function(id, message, trackcmp_url, email) {
+				// GTM Event
+				window.dataLayer = window.dataLayer || [];
+				window.dataLayer.push({'event': 'cta_subscribe_click'});
+
 				$form.fadeOut(300, function() {
 					$(this).html('<div class="h3-regular text-brand bg-white p-20 border-radius-20" style="border-radius: 20px; color: #EF5A35; text-align: center;">¡Gracias por suscribirte! Te avisaremos pronto.</div>').fadeIn();
 				});
