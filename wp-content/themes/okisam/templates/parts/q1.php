@@ -36,6 +36,9 @@ if (!$is_q1_unlocked && !$has_modules) {
 // Determine container class based on lock status
 $container_class = $is_q1_unlocked ? 'q1-container' : 'q1-container locked';
 
+$phase = 'q1';
+$unlocked = $is_q1_unlocked ? 'true' : 'false';
+
 // Get unlock date for locked message
 $q1_unlock_date = okisam_get_q_unlock_date($panel_id, 'panel_q1_unlock_day');
 $unlock_date_formatted = okisam_format_unlock_date($q1_unlock_date);
@@ -43,7 +46,11 @@ $unlock_date_formatted = okisam_format_unlock_date($q1_unlock_date);
 
 <div class="p-20 <?php echo esc_attr($container_class); ?>">
 	<?php if (!$is_q1_unlocked): 
-		get_template_part('templates/parts/q_lock', null, ['q_field' => 'panel_q1_unlock_day']);
+		get_template_part('templates/parts/q_lock', null, [
+			'q_field' => 'panel_q1_unlock_day',
+			'phase' => $phase,
+			'unlocked' => $unlocked
+		]);
 	else: ?>
 		<h2>Q1 - Primera Quincena</h2>
 		

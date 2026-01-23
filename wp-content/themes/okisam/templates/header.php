@@ -51,7 +51,7 @@ if ($active_panel) {
 		</div>
 
 		<div class="mt-55">
-			<a href="#newsletter" class="btn-orange">Suscríbete ya</a>
+			<a href="#newsletter" class="btn-orange" data-cta="subscription">Suscríbete ya</a>
 		</div>
 		<?php endif; ?>
 	</div>

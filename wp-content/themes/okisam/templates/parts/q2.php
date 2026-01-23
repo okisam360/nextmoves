@@ -36,6 +36,9 @@ if (!$is_q2_unlocked && !$has_modules) {
 // Determine container class based on lock status
 $container_class = $is_q2_unlocked ? 'q2-container' : 'q2-container locked';
 
+$phase = 'q2';
+$unlocked = $is_q2_unlocked ? 'true' : 'false';
+
 // Get unlock date for locked message
 $q2_unlock_date = okisam_get_q_unlock_date($panel_id, 'panel_q2_unlock_day');
 $unlock_date_formatted = okisam_format_unlock_date($q2_unlock_date);
@@ -43,7 +46,11 @@ $unlock_date_formatted = okisam_format_unlock_date($q2_unlock_date);
 
 <div class="p-20 <?php echo esc_attr($container_class); ?>">
 	<?php if (!$is_q2_unlocked): 
-		get_template_part('templates/parts/q_lock', null, ['q_field' => 'panel_q2_unlock_day']);
+		get_template_part('templates/parts/q_lock', null, [
+			'q_field' => 'panel_q2_unlock_day',
+			'phase' => $phase,
+			'unlocked' => $unlocked
+		]);
 	else: ?>
 		<h2>Q2 - Segunda Quincena</h2>
 		

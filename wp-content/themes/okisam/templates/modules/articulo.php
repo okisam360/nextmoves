@@ -45,9 +45,13 @@ $size = isset($module['article_size']) ? $module['article_size'] : '1x1';
 $image_url = is_array($image) ? $image['url'] : $image;
 $author_image_url = is_array($author_image) ? $author_image['url'] : $author_image;
 $modal_id = 'modal-article-' . uniqid();
+
+// Tracking data
+$m_phase = isset($phase) ? $phase : '';
+$m_unlocked = isset($unlocked) ? $unlocked : 'true';
 ?>
 
-<div class="module module-articulo module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>">
+<div class="module module-articulo module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>" data-module-type="article" data-phase="<?php echo esc_attr($m_phase); ?>" data-unlocked="<?php echo esc_attr($m_unlocked); ?>">
 	<?php if ($image_url): ?>
 		<div class="module-image">
 			<img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($title); ?>">
@@ -82,13 +86,13 @@ $modal_id = 'modal-article-' . uniqid();
 		<?php endif; ?>
 
 		<div class="module-action">
-			<button class="btn-cta open-article-modal" data-modal="<?php echo esc_attr($modal_id); ?>" data-post="<?php echo esc_attr($card_id); ?>">Leer más</button>
+			<button class="btn-cta open-article-modal" data-modal="<?php echo esc_attr($modal_id); ?>" data-post="<?php echo esc_attr($card_id); ?>" data-article-id="<?php echo esc_attr($card_id); ?>">Leer más</button>
 		</div>
 	</div>
 </div>
 
 <!-- Modal Structure -->
-<div id="<?php echo esc_attr($modal_id); ?>" class="modal-article" style="display: none;">
+<div id="<?php echo esc_attr($modal_id); ?>" class="modal-article" style="display: none;" data-modal="article">
 	<div class="modal-article-overlay"></div>
 	<div class="modal-article-container">
 		<button class="modal-article-close">

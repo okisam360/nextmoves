@@ -6,6 +6,9 @@
 global $panel_id;
 
 $q_field = isset($args['q_field']) ? $args['q_field'] : 'panel_q1_unlock_day';
+$phase = isset($args['phase']) ? $args['phase'] : 'q1';
+$unlocked = isset($args['unlocked']) ? $args['unlocked'] : 'false';
+
 $unlock_date = okisam_get_q_unlock_date($panel_id, $q_field);
 $panel_image = get_field('panel_image', $panel_id);
 $bg_url = ($panel_image && isset($panel_image['url'])) ? $panel_image['url'] : '';
@@ -16,7 +19,7 @@ $current_timestamp = current_time('timestamp');
 $remaining_seconds = $unlock_timestamp - $current_timestamp;
 ?>
 
-<div   class="locked-overlay">
+<div  class="locked-overlay" data-phase="<?php echo esc_attr($phase); ?>" data-unlocked="<?php echo esc_attr($unlocked); ?>">
     <div id="newsletter"  class="q-lock-content text-neutral-00 text-center">
         <h2 class="h1-semibold mb-30">Nuevo contenido en</h2>
 
@@ -76,7 +79,7 @@ $remaining_seconds = $unlock_timestamp - $current_timestamp;
                         <!-- Email Svg -->
                         <input type="email" name="email" placeholder="Tu correo electrónico" required class="h4-regular text-neutral-90">
                     </div>
-                    <button type="submit" class="btn-form-newsletter bg-brand text-neutral-00 h3-regular">Suscríbete ya</button>
+                    <button type="submit" class="btn-form-newsletter bg-brand text-neutral-00 h3-regular" data-cta="subscription">Suscríbete ya</button>
                 </div>
                 
                 <div class="form-legal text-left mt-30">
