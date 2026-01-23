@@ -42,7 +42,23 @@ $remaining_seconds = $unlock_timestamp - $current_timestamp;
                 </div>
             </div>
 
-            <form  class="q-lock-form mb-30">
+            <form action="https://okisam.activehosted.com/proc.php" method="POST" class="q-lock-form mb-30" id="_form_316_">
+                <input type="hidden" name="u" value="316" />
+                <input type="hidden" name="f" value="316" />
+                <input type="hidden" name="s" />
+                <input type="hidden" name="c" value="0" />
+                <input type="hidden" name="m" value="0" />
+                <input type="hidden" name="act" value="sub" />
+                <input type="hidden" name="v" value="2" />
+                <input type="hidden" name="or" value="46c7d1e9-b05a-4a3d-b17d-576bc07428f8" />
+
+                <!-- UTM Fields -->
+                <input type="hidden" name="field[143]" id="utm_source_ac" value="" />
+                <input type="hidden" name="field[144]" id="utm_medium_ac" value="" />
+                <input type="hidden" name="field[145]" id="utm_campaign_ac" value="" />
+                <input type="hidden" name="field[188]" id="utm_content_ac" value="" />
+                <input type="hidden" name="field[189]" id="utm_term_ac" value="" />
+
                 <div class="subscription-input-group">
                     <div class="input-with-icon">
                         <!-- Email Svg -->
@@ -65,7 +81,7 @@ $remaining_seconds = $unlock_timestamp - $current_timestamp;
                 
                 <div class="form-legal text-left mt-30">
                     <label class="checkbox-container body-s-regular">
-                        <input type="checkbox" name="terms" required>
+                        <input type="checkbox" name="field[24]" value="1" required>
                         <span class="checkmark"></span>
                         He Leído, entiendo y acepto <a href="#" class="text-neutral-00 underline">política de privacidad</a> y <a href="#" class="text-neutral-00 underline">Condiciones de Uso</a> *.
                         <p class="legal-text body-s-regular mt-15">
@@ -73,6 +89,7 @@ $remaining_seconds = $unlock_timestamp - $current_timestamp;
                         </p>
                     </label>
                 </div>
+                <div class="form-messages mt-20"></div>
             </form>
         </div>
     </div>

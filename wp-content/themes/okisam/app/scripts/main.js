@@ -204,22 +204,55 @@
 		});
 	});
 
-	// Subscription form logic (Simulated)
+	// Subscription form logic (ActiveCampaign Integration)
 	$(document).ready(function() {
+		// Fill UTM fields from URL parameters
+		const urlParams = new URLSearchParams(window.location.search);
+		$('#utm_source_ac').val(urlParams.get('utm_source') || '');
+		$('#utm_medium_ac').val(urlParams.get('utm_medium') || '');
+		$('#utm_campaign_ac').val(urlParams.get('utm_campaign') || '');
+		$('#utm_content_ac').val(urlParams.get('utm_content') || '');
+		$('#utm_term_ac').val(urlParams.get('utm_term') || '');
+
 		$('.q-lock-form').on('submit', function(e) {
 			e.preventDefault();
 			var $form = $(this);
 			var $btn = $form.find('button');
+			var $msg = $form.find('.form-messages');
 			var originalText = $btn.text();
 
 			$btn.text('Enviando...').prop('disabled', true);
+			$msg.html('');
 
-			// Simulated feedback
-			setTimeout(function() {
+			// Action and serialized data
+			var action = $form.attr('action');
+			
+			// We use a script injection method similar to ActiveCampaign's native script 
+			// to avoid CORS issues while maintaining the UI.
+			var serializedData = $form.serialize();
+			var fullUrl = action + '?' + serializedData + '&jsonp=true';
+
+			// Define the success callback that ActiveCampaign calls
+			window._show_thank_you = function(id, message, trackcmp_url, email) {
 				$form.fadeOut(300, function() {
-					$(this).html('<div class="h3-regular text-brand bg-white p-20 border-radius-20" style="border-radius: 20px; color: #EF5A35;">¡Gracias por suscribirte! Te avisaremos pronto.</div>').fadeIn();
+					$(this).html('<div class="h3-regular text-brand bg-white p-20 border-radius-20" style="border-radius: 20px; color: #EF5A35; text-align: center;">¡Gracias por suscribirte! Te avisaremos pronto.</div>').fadeIn();
 				});
-			}, 1500);
+			};
+
+			// Define error callback
+			window._show_error = function(id, message, html) {
+				$btn.text(originalText).prop('disabled', false);
+				$msg.html('<p class="text-white mt-10 body-s-regular">' + message + '</p>');
+			};
+
+			// Create script element to perform the request
+			var script = document.createElement('script');
+			script.src = fullUrl;
+			script.onerror = function() {
+				$btn.text(originalText).prop('disabled', false);
+				$msg.html('<p class="text-white mt-10 body-s-regular">Ocurrió un error. Por favor, inténtalo de nuevo.</p>');
+			};
+			document.head.appendChild(script);
 		});
 	});
 
