@@ -13,9 +13,13 @@ $size = isset($module['quote_size']) ? $module['quote_size'] : '1x1';
 // Check if there's no attribution
 $has_attribution = !empty($author) || !empty($source);
 $no_attribution_class = $has_attribution ? '' : 'no-attribution';
+
+// Tracking data
+$m_phase = isset($phase) ? $phase : '';
+$m_unlocked = isset($unlocked) ? $unlocked : 'true';
 ?>
 
-<div class="module module-quote module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?> <?php echo esc_attr($no_attribution_class); ?>">
+<div class="module module-quote module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?> <?php echo esc_attr($no_attribution_class); ?>" data-module-type="quote" data-phase="<?php echo esc_attr($m_phase); ?>" data-unlocked="<?php echo esc_attr($m_unlocked); ?>">
 	<div class="module-content">
 		<?php if ($text): ?>
 			<blockquote class="quote-text">

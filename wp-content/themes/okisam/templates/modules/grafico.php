@@ -11,9 +11,13 @@ $color = isset($module['graphic_color']) ? $module['graphic_color'] : 'default';
 $size = isset($module['graphic_size']) ? $module['graphic_size'] : '1x1';
 
 $image_url = is_array($image) ? $image['url'] : $image;
+
+// Tracking data
+$m_phase = isset($phase) ? $phase : '';
+$m_unlocked = isset($unlocked) ? $unlocked : 'true';
 ?>
 
-<div class="module module-grafico module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>">
+<div class="module module-grafico module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>" data-module-type="graphic" data-phase="<?php echo esc_attr($m_phase); ?>" data-unlocked="<?php echo esc_attr($m_unlocked); ?>">
 	<?php if ($image_url): ?>
 		<div class="module-image" style="background-image: url('<?php echo esc_url($image_url); ?>');"></div>
 	<?php endif; ?>

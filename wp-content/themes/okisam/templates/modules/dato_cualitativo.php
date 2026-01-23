@@ -9,9 +9,13 @@ $label = isset($module['data_label']) ? $module['data_label'] : '';
 $note = isset($module['data_note']) ? $module['data_note'] : '';
 $color = isset($module['data_color']) ? $module['data_color'] : 'default';
 $size = isset($module['data_size']) ? $module['data_size'] : '1x1';
+
+// Tracking data
+$m_phase = isset($phase) ? $phase : '';
+$m_unlocked = isset($unlocked) ? $unlocked : 'true';
 ?>
 
-<div class="module module-dato-cualitativo module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>">
+<div class="module module-dato-cualitativo module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>" data-module-type="data" data-phase="<?php echo esc_attr($m_phase); ?>" data-unlocked="<?php echo esc_attr($m_unlocked); ?>">
 	<div class="module-content">
 		<?php if ($value): ?>
 			<div class="data-value"><?php echo esc_html($value); ?></div>

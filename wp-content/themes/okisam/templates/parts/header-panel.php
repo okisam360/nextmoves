@@ -63,7 +63,7 @@ $video_bg = $panel_video_thumbnail ? $panel_video_thumbnail['url'] : $theme_uri 
 			<h3 class="h2-bold title-video text-neutral-00"><?php echo esc_html($panel_video_title ? $panel_video_title : ''); ?></h3>
 
 			<?php if ($panel_video_url): ?>
-				<a href="#" class="video-play-link js-video-modal-trigger" data-video-url="<?php echo esc_url($panel_video_url); ?>" rel="noopener">
+				<a href="#" class="video-play-link js-video-modal-trigger" data-video-url="<?php echo esc_url($panel_video_url); ?>" rel="noopener" data-module-type="video-header" data-video="true" data-unlocked="true">
 					<div class="play-icon-wrapper">
 						<svg class="play-icon-circle-text" width="200" height="200" viewBox="0 0 200 200">
 							<defs>

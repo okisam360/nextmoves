@@ -11,9 +11,13 @@ $desc = isset($module['video_sumario_desc']) ? $module['video_sumario_desc'] : '
 $size = isset($module['video_sumario_size']) ? $module['video_sumario_size'] : '1x1';
 
 $thumb_url = is_array($thumb) ? $thumb['url'] : $thumb;
+
+// Tracking data
+$m_phase = isset($phase) ? $phase : '';
+$m_unlocked = isset($unlocked) ? $unlocked : 'true';
 ?>
 
-<div class="module module-video-sumario module-size-<?php echo esc_attr($size); ?>">
+<div class="module module-video-sumario module-size-<?php echo esc_attr($size); ?>" data-module-type="video-summary" data-video="true" data-phase="<?php echo esc_attr($m_phase); ?>" data-unlocked="<?php echo esc_attr($m_unlocked); ?>">
 	<?php if ($thumb_url): ?>
 		<div class="module-thumbnail" style="background-image: url('<?php echo esc_url($thumb_url); ?>');">
 			<!-- <?php if ($url): ?>
