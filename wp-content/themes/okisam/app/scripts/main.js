@@ -2,12 +2,40 @@
 
 	let player;
 	let endCheckInterval;
+	let youtubeApiLoaded = false;
+	let youtubeApiLoading = false;
 
-	// Load YouTube API
-	const tag = document.createElement('script');
-	tag.src = "https://www.youtube.com/iframe_api";
-	const firstScriptTag = document.getElementsByTagName('script')[0];
-	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+	// Load YouTube API only if there are videos on the page
+	function loadYouTubeAPI() {
+		// Check if API is already loaded or loading
+		if (youtubeApiLoaded || youtubeApiLoading) return;
+		
+		// Check if API is already available
+		if (typeof YT !== 'undefined' && YT.Player) {
+			youtubeApiLoaded = true;
+			return;
+		}
+
+		youtubeApiLoading = true;
+		const tag = document.createElement('script');
+		tag.src = "https://www.youtube.com/iframe_api";
+		const firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+		// Set callback for when API is ready
+		window.onYouTubeIframeAPIReady = function() {
+			youtubeApiLoaded = true;
+			youtubeApiLoading = false;
+		};
+	}
+
+	// Only load YouTube API if there are video triggers on the page
+	$(document).ready(function() {
+		if ($('.js-video-modal-trigger').length > 0) {
+			// Load API when user clicks on a video (lazy load)
+			// This saves bandwidth on pages with videos that aren't clicked
+		}
+	});
 
 	$(document).ready(function() {
 		var widthBody = $(window).width();
@@ -286,47 +314,66 @@
 
 		if (!videoId) return;
 
+		// Load YouTube API on first click (lazy load)
+		loadYouTubeAPI();
+
 		const $modal = $('#video-modal');
 		
-		if (typeof YT !== 'undefined' && YT.Player) {
-			player = new YT.Player('player-container', {
-				videoId: videoId,
-				playerVars: {
-					'autoplay': 1,
-					'controls': 0,
-					'modestbranding': 1,
-					'rel': 0,
-					'playsinline': 1,
-					'enablejsapi': 1,
-					'origin': window.location.origin
-				},
-				events: {
-					'onStateChange': function(event) {
-						if (event.data === YT.PlayerState.PLAYING) {
-							endCheckInterval = setInterval(function() {
-								const duration = player.getDuration();
-								const currentTime = player.getCurrentTime();
-								if (duration > 0 && (duration - currentTime) <= 1) {
-									closeVideoModal();
-								}
-							}, 200);
-						} else if (event.data === YT.PlayerState.ENDED) {
-							closeVideoModal();
-						} else {
-							clearInterval(endCheckInterval);
+		// Wait for API to be ready if it's loading
+		function initPlayer() {
+			if (typeof YT !== 'undefined' && YT.Player) {
+				player = new YT.Player('player-container', {
+					videoId: videoId,
+					playerVars: {
+						'autoplay': 1,
+						'controls': 0,
+						'modestbranding': 1,
+						'rel': 0,
+						'playsinline': 1,
+						'enablejsapi': 1,
+						'origin': window.location.origin
+					},
+					events: {
+						'onStateChange': function(event) {
+							if (event.data === YT.PlayerState.PLAYING) {
+								endCheckInterval = setInterval(function() {
+									const duration = player.getDuration();
+									const currentTime = player.getCurrentTime();
+									if (duration > 0 && (duration - currentTime) <= 1) {
+										closeVideoModal();
+									}
+								}, 200);
+							} else if (event.data === YT.PlayerState.ENDED) {
+								closeVideoModal();
+							} else {
+								clearInterval(endCheckInterval);
+							}
 						}
 					}
+				});
+				$modal.fadeIn(300);
+				$('body').addClass('modal-open');
+			} else {
+				// Fallback if API not loaded yet - wait a bit and retry
+				if (youtubeApiLoading) {
+					setTimeout(initPlayer, 100);
+				} else {
+					// Fallback if API failed to load
+					const $container = $('#player-container');
+					const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`;
+					$container.replaceWith(`<iframe src="${embedUrl}" loading="lazy" allow="autoplay; encrypted-media" allowfullscreen></iframe>`);
+					$modal.fadeIn(300);
+					$('body').addClass('modal-open');
 				}
-			});
-		} else {
-			// Fallback if API not loaded
-			const $container = $('#player-container');
-			const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`;
-			$container.replaceWith(`<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`);
+			}
 		}
-		
+
+		// Show modal immediately
 		$modal.fadeIn(300);
 		$('body').addClass('modal-open');
+		
+		// Initialize player (will wait for API if needed)
+		initPlayer();
 	});
 
 	$('.modal-video-close, .modal-video-overlay').on('click', function() {

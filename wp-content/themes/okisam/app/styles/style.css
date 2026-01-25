@@ -361,10 +361,17 @@ gap:1rem ;
 .panel-image{
 border-radius:8px;
 overflow:hidden;
-background-size:cover;
-background-position:center;
 height: 892px;
 width: 775px;
+position: relative;
+}
+
+.panel-image img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+object-position: center;
+display: block;
 }
 
 /* Style - Panel Video */
@@ -453,6 +460,14 @@ body.home .main {
   min-height: 400px;
   height: auto;
   border-radius: 0;
+}
+
+.panel-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .panel-info{
@@ -785,9 +800,15 @@ padding: 8px 16px;
   height: 100%;
   padding-top: 0;
   z-index: 1;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.module-video-sumario .module-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .module-video-sumario .module-thumbnail::before {
@@ -873,9 +894,15 @@ padding: 8px 16px;
   height: 100%;
   padding-top: 0;
   z-index: 1;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.module-video-entrevista .module-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .module-video-entrevista .module-thumbnail::before {
@@ -1509,9 +1536,14 @@ padding: 8px 16px;
   width: 100%;
   height: 100%;
   z-index: 1;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.module-grafico .module-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .module-grafico .module-content {

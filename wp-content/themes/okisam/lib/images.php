@@ -39,6 +39,11 @@ $clean_image_filenames = new CleanImageFilenames();
 // Image sizes
 add_image_size( 'thumbnail', 90, 90, true );
 
+// Custom sizes for mobile optimization
+add_image_size( 'mobile-small', 400, 400, false );  // For mobile grid modules
+add_image_size( 'mobile-medium', 600, 600, false );  // For mobile hero
+add_image_size( 'mobile-large', 800, 800, false );  // For tablet
+
 update_option( 'thumbnail_size_w', 90 );
 update_option( 'thumbnail_size_h', 90 );
 

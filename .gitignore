@@ -1,0 +1,8 @@
+# WordPress uploads - No subir imágenes ni archivos de medios
+wp-content/uploads/
+
+# ShortPixel backups
+wp-content/uploads/ShortpixelBackups/
+
+# Plugins (opcional - descomenta si no quieres subir plugins)
+# wp-content/plugins/

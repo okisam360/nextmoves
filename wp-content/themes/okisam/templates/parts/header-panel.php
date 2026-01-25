@@ -28,9 +28,64 @@ $panel_video_title = get_field('panel_title_video', $panel_id);
 $panel_video_thumbnail = get_field('panel_video_thumbnail', $panel_id);
 $panel_video_url = get_field('panel_video', $panel_id);
 
-// Fallback images if fields are empty
-$header_image = $panel_image ? $panel_image['url'] : $theme_uri . '/app/images/tmp/e11a6642c6aa3136891018c085b974f1db587f0a.jpg';
-$video_bg = $panel_video_thumbnail ? $panel_video_thumbnail['url'] : $theme_uri . '/app/images/tmp/95044467b2e4e5101cfa5e345d4455db03865474.jpg';
+// Fallback images if fields are empty - Handle different ACF return formats
+$header_image_srcset = '';
+$header_image_sizes = '';
+$header_image_id = 0;
+
+if (is_array($panel_image) && isset($panel_image['url'])) {
+	$header_image = $panel_image['url'];
+	$header_image_width = isset($panel_image['width']) ? (int) $panel_image['width'] : 0;
+	$header_image_height = isset($panel_image['height']) ? (int) $panel_image['height'] : 0;
+	$header_image_id = isset($panel_image['ID']) ? (int) $panel_image['ID'] : 0;
+	
+	// Generate srcset and sizes for responsive images (critical for mobile LCP)
+	if ($header_image_id) {
+		// Use medium_large (720px) as base size - WordPress will generate srcset with all available sizes
+		$header_image_srcset = wp_get_attachment_image_srcset($header_image_id, 'medium_large');
+		if (!$header_image_srcset) {
+			// Fallback: try with large size
+			$header_image_srcset = wp_get_attachment_image_srcset($header_image_id, 'large');
+		}
+		if (!$header_image_srcset && $header_image_width && $header_image_height) {
+			// Last fallback: manually calculate srcset using available sizes
+			$image_meta = wp_get_attachment_metadata($header_image_id);
+			if ($image_meta && isset($image_meta['sizes'])) {
+				$header_image_srcset = wp_calculate_image_srcset(
+					array($header_image_width, $header_image_height),
+					$header_image,
+					$image_meta,
+					$header_image_id
+				);
+			}
+		}
+		// For mobile: max 100vw, for desktop: max 775px (panel-image width)
+		$header_image_sizes = '(max-width: 991px) 100vw, 775px';
+		
+		// DEBUG: Show image info (only for admins)
+		if (current_user_can('administrator') && isset($_GET['debug_images'])) {
+			$image_meta = wp_get_attachment_metadata($header_image_id);
+			echo '<!-- DEBUG HEADER PANEL: ID=' . $header_image_id . ', URL=' . $header_image . ', Srcset=' . ($header_image_srcset ?: 'EMPTY') . ', Meta=' . print_r($image_meta, true) . ' -->';
+		}
+	}
+} elseif (is_string($panel_image) && !empty($panel_image)) {
+	$header_image = $panel_image;
+	$header_image_width = 0;
+	$header_image_height = 0;
+} else {
+	$header_image = $theme_uri . '/app/images/tmp/e11a6642c6aa3136891018c085b974f1db587f0a.jpg';
+	$header_image_width = 0;
+	$header_image_height = 0;
+}
+
+// Handle video thumbnail
+if (is_array($panel_video_thumbnail) && isset($panel_video_thumbnail['url'])) {
+	$video_bg = $panel_video_thumbnail['url'];
+} elseif (is_string($panel_video_thumbnail) && !empty($panel_video_thumbnail)) {
+	$video_bg = $panel_video_thumbnail;
+} else {
+	$video_bg = $theme_uri . '/app/images/tmp/95044467b2e4e5101cfa5e345d4455db03865474.jpg';
+}
 ?>
 
 <div class="panel-header">
@@ -53,7 +108,32 @@ $video_bg = $panel_video_thumbnail ? $panel_video_thumbnail['url'] : $theme_uri 
 			</div>
 		</div>
 
-		<div class="panel-image" style="background-image: url('<?php echo esc_url($header_image); ?>');" role="img" aria-label="Imagen del panel"></div>
+			<div class="panel-image">
+				<?php if (current_user_can('administrator') && isset($_GET['debug_images'])): ?>
+					<div style="background: yellow; padding: 10px; margin-bottom: 10px; font-size: 12px; color: black; position: relative; z-index: 9999;">
+						<strong>DEBUG HEADER PANEL:</strong><br>
+						ID: <?php echo $header_image_id ?: 'NO ID'; ?><br>
+						URL: <?php echo esc_html($header_image); ?><br>
+						Srcset: <?php echo $header_image_srcset ? esc_html($header_image_srcset) : 'EMPTY'; ?><br>
+						Sizes: <?php echo esc_html($header_image_sizes); ?><br>
+						Dimensions: <?php echo $header_image_width . 'x' . $header_image_height; ?>
+					</div>
+				<?php endif; ?>
+				<img
+					src="<?php echo esc_url($header_image); ?>"
+					<?php if ($header_image_srcset): ?>
+						srcset="<?php echo esc_attr($header_image_srcset); ?>"
+						sizes="<?php echo esc_attr($header_image_sizes); ?>"
+					<?php endif; ?>
+					<?php if ($header_image_width && $header_image_height): ?>
+						width="<?php echo esc_attr($header_image_width); ?>"
+						height="<?php echo esc_attr($header_image_height); ?>"
+					<?php endif; ?>
+					alt="<?php echo esc_attr($panel_title ? $panel_title : __('Imagen del panel', 'okisam')); ?>"
+					fetchpriority="high"
+					loading="eager"
+				>
+		</div>
 	</div>
 
 	<?php if ($panel_video_title || $panel_video_thumbnail): ?>

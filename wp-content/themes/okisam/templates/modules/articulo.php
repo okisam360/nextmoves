@@ -42,8 +42,49 @@ if ($date) {
 }
 $size = isset($module['article_size']) ? $module['article_size'] : '1x1';
 
-$image_url = is_array($image) ? $image['url'] : $image;
-$author_image_url = is_array($author_image) ? $author_image['url'] : $author_image;
+$image_url        = is_array($image) && isset($image['url']) ? $image['url'] : $image;
+$image_width      = is_array($image) && isset($image['width']) ? (int) $image['width'] : 0;
+$image_height     = is_array($image) && isset($image['height']) ? (int) $image['height'] : 0;
+$image_id = is_array($image) && isset($image['ID']) ? (int) $image['ID'] : 0;
+
+// Generate srcset and sizes for responsive images
+$image_srcset = '';
+$image_sizes = '';
+if ($image_id) {
+	// Use medium size (360px) as base - WordPress will generate srcset with all available sizes
+	$image_srcset = wp_get_attachment_image_srcset($image_id, 'medium');
+	if (!$image_srcset && $image_width && $image_height) {
+		// Fallback: manually calculate srcset
+		$image_meta = wp_get_attachment_metadata($image_id);
+		if ($image_meta && isset($image_meta['sizes'])) {
+			$image_srcset = wp_calculate_image_srcset(
+				array($image_width, $image_height),
+				$image_url,
+				$image_meta,
+				$image_id
+			);
+		}
+	}
+	// For grid modules: max 1/3 of viewport width on mobile (~400px), full width on desktop
+	$image_sizes = '(max-width: 991px) 33vw, (max-width: 1200px) 300px, 400px';
+	
+	// DEBUG: Show image info (only for admins)
+	if (current_user_can('administrator') && isset($_GET['debug_images'])) {
+		$image_meta = wp_get_attachment_metadata($image_id);
+		echo '<!-- DEBUG ARTICULO IMAGE: ID=' . $image_id . ', URL=' . $image_url . ', Srcset=' . ($image_srcset ?: 'EMPTY') . ', Meta=' . print_r($image_meta, true) . ' -->';
+	}
+}
+
+$author_image_url = is_array($author_image) && isset($author_image['url']) ? $author_image['url'] : $author_image;
+$author_image_width  = is_array($author_image) && isset($author_image['width']) ? (int) $author_image['width'] : 0;
+$author_image_height = is_array($author_image) && isset($author_image['height']) ? (int) $author_image['height'] : 0;
+$author_image_id = is_array($author_image) && isset($author_image['ID']) ? (int) $author_image['ID'] : 0;
+
+// Generate srcset for author image (smaller, used in modal)
+$author_image_srcset = '';
+if ($author_image_id) {
+	$author_image_srcset = wp_get_attachment_image_srcset($author_image_id, 'thumbnail');
+}
 $modal_id = 'modal-article-' . uniqid();
 
 // Tracking data
@@ -54,7 +95,29 @@ $m_unlocked = isset($unlocked) ? $unlocked : 'true';
 <div class="module module-articulo module-size-<?php echo esc_attr($size); ?> module-color-<?php echo esc_attr($color); ?>" data-module-type="article" data-phase="<?php echo esc_attr($m_phase); ?>" data-unlocked="<?php echo esc_attr($m_unlocked); ?>">
 	<?php if ($image_url): ?>
 		<div class="module-image">
-			<img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($title); ?>">
+			<?php if (current_user_can('administrator') && isset($_GET['debug_images'])): ?>
+				<div style="background: yellow; padding: 10px; margin-bottom: 10px; font-size: 12px; color: black;">
+					<strong>DEBUG ARTICULO:</strong><br>
+					ID: <?php echo $image_id ?: 'NO ID'; ?><br>
+					URL: <?php echo esc_html($image_url); ?><br>
+					Srcset: <?php echo $image_srcset ? esc_html($image_srcset) : 'EMPTY'; ?><br>
+					Sizes: <?php echo esc_html($image_sizes); ?><br>
+					Dimensions: <?php echo $image_width . 'x' . $image_height; ?>
+				</div>
+			<?php endif; ?>
+			<img
+				src="<?php echo esc_url($image_url); ?>"
+				<?php if ($image_srcset): ?>
+					srcset="<?php echo esc_attr($image_srcset); ?>"
+					sizes="<?php echo esc_attr($image_sizes); ?>"
+				<?php endif; ?>
+				<?php if ($image_width && $image_height): ?>
+					width="<?php echo esc_attr($image_width); ?>"
+					height="<?php echo esc_attr($image_height); ?>"
+				<?php endif; ?>
+				alt="<?php echo esc_attr($title); ?>"
+				loading="lazy"
+			>
 		</div>
 	<?php endif; ?>
 
@@ -110,9 +173,20 @@ $m_unlocked = isset($unlocked) ? $unlocked : 'true';
 			<div class="modal-article-meta">
 				<div class="modal-article-author">
 					<?php if ($author_image_url): ?>
-						<div class="modal-article-author-image">
-							<img src="<?php echo esc_url($author_image_url); ?>" alt="<?php echo esc_attr($author_name); ?>">
-						</div>
+					<div class="modal-article-author-image">
+						<img
+							src="<?php echo esc_url($author_image_url); ?>"
+							<?php if ($author_image_srcset): ?>
+								srcset="<?php echo esc_attr($author_image_srcset); ?>"
+							<?php endif; ?>
+							<?php if ($author_image_width && $author_image_height): ?>
+								width="<?php echo esc_attr($author_image_width); ?>"
+								height="<?php echo esc_attr($author_image_height); ?>"
+							<?php endif; ?>
+							alt="<?php echo esc_attr($author_name); ?>"
+							loading="lazy"
+						>
+					</div>
 					<?php endif; ?>
 
 					<?php if ($author_name): ?>

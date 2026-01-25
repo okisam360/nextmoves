@@ -43,8 +43,31 @@ function guv_head_clean() {
   }
 }
 add_action('init', 'guv_head_clean');
-// Change tag style
+// Change tag style - Make non-critical CSS load asynchronously
 function guv_tag_style($input) {
+  // Skip if it's a critical stylesheet (we want these to load normally)
+  if (strpos($input, 'me.css') !== false || strpos($input, 'font-sizes.css') !== false) {
+    preg_match_all("!<link rel='stylesheet'\s?(id='[^']+')?\s+href='(.*)' type='text/css' media='(.*)' />!", $input, $matches);
+    if (empty($matches[2])) {
+      return $input;
+    }
+    $media = $matches[3][0] !== '' && $matches[3][0] !== 'all' ? ' media="' . $matches[3][0] . '"' : '';
+    return '<link rel="stylesheet" href="' . $matches[2][0] . '"' . $media . '>' . "\n";
+  }
+  
+  // For non-critical CSS (style.css), use preload + onload technique
+  if (strpos($input, 'style.css') !== false) {
+    preg_match_all("!<link rel='stylesheet'\s?(id='[^']+')?\s+href='(.*)' type='text/css' media='(.*)' />!", $input, $matches);
+    if (empty($matches[2])) {
+      return $input;
+    }
+    $href = $matches[2][0];
+    $id = isset($matches[1][0]) && !empty($matches[1][0]) ? ' id="' . str_replace("id='", '', str_replace("'", '', $matches[1][0])) . '"' : '';
+    return '<link rel="preload" href="' . $href . '" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">' . "\n" .
+           '<noscript><link rel="stylesheet" href="' . $href . '"></noscript>' . "\n";
+  }
+  
+  // Default behavior for other stylesheets
   preg_match_all("!<link rel='stylesheet'\s?(id='[^']+')?\s+href='(.*)' type='text/css' media='(.*)' />!", $input, $matches);
   if (empty($matches[2])) {
     return $input;

@@ -10,7 +10,38 @@ $thumb = isset($module['video_sumario_thumb']) ? $module['video_sumario_thumb'] 
 $desc = isset($module['video_sumario_desc']) ? $module['video_sumario_desc'] : '';
 $size = isset($module['video_sumario_size']) ? $module['video_sumario_size'] : '1x1';
 
-$thumb_url = is_array($thumb) ? $thumb['url'] : $thumb;
+$thumb_url   = is_array($thumb) && isset($thumb['url']) ? $thumb['url'] : $thumb;
+$thumb_width = is_array($thumb) && isset($thumb['width']) ? (int) $thumb['width'] : 0;
+$thumb_height = is_array($thumb) && isset($thumb['height']) ? (int) $thumb['height'] : 0;
+$thumb_id = is_array($thumb) && isset($thumb['ID']) ? (int) $thumb['ID'] : 0;
+
+// Generate srcset and sizes for responsive images
+$thumb_srcset = '';
+$thumb_sizes = '';
+if ($thumb_id) {
+	// Use medium size (360px) as base - WordPress will generate srcset with all available sizes
+	$thumb_srcset = wp_get_attachment_image_srcset($thumb_id, 'medium');
+	if (!$thumb_srcset && $thumb_width && $thumb_height) {
+		// Fallback: manually calculate srcset
+		$image_meta = wp_get_attachment_metadata($thumb_id);
+		if ($image_meta && isset($image_meta['sizes'])) {
+			$thumb_srcset = wp_calculate_image_srcset(
+				array($thumb_width, $thumb_height),
+				$thumb_url,
+				$image_meta,
+				$thumb_id
+			);
+		}
+	}
+	// For grid modules: max 1/3 of viewport width on mobile (~400px), full width on desktop
+	$thumb_sizes = '(max-width: 991px) 33vw, (max-width: 1200px) 300px, 400px';
+	
+	// DEBUG: Show image info (only for admins)
+	if (current_user_can('administrator') && isset($_GET['debug_images'])) {
+		$image_meta = wp_get_attachment_metadata($thumb_id);
+		echo '<!-- DEBUG VIDEO SUMARIO: ID=' . $thumb_id . ', URL=' . $thumb_url . ', Srcset=' . ($thumb_srcset ?: 'EMPTY') . ', Meta=' . print_r($image_meta, true) . ' -->';
+	}
+}
 
 // Tracking data
 $m_phase = isset($phase) ? $phase : '';
@@ -19,12 +50,30 @@ $m_unlocked = isset($unlocked) ? $unlocked : 'true';
 
 <div class="module module-video-sumario module-size-<?php echo esc_attr($size); ?>" data-module-type="video-summary" data-video="true" data-phase="<?php echo esc_attr($m_phase); ?>" data-unlocked="<?php echo esc_attr($m_unlocked); ?>">
 	<?php if ($thumb_url): ?>
-		<div class="module-thumbnail" style="background-image: url('<?php echo esc_url($thumb_url); ?>');">
-			<!-- <?php if ($url): ?>
-				<a href="#" class="video-play-link js-video-modal-trigger" data-video-url="<?php echo esc_url($url); ?>" rel="noopener">
-					<span class="play-icon">▶</span>
-				</a>
-			<?php endif; ?> -->
+		<div class="module-thumbnail">
+			<?php if (current_user_can('administrator') && isset($_GET['debug_images'])): ?>
+				<div style="background: yellow; padding: 10px; margin-bottom: 10px; font-size: 12px; color: black;">
+					<strong>DEBUG VIDEO SUMARIO:</strong><br>
+					ID: <?php echo $thumb_id ?: 'NO ID'; ?><br>
+					URL: <?php echo esc_html($thumb_url); ?><br>
+					Srcset: <?php echo $thumb_srcset ? esc_html($thumb_srcset) : 'EMPTY'; ?><br>
+					Sizes: <?php echo esc_html($thumb_sizes); ?><br>
+					Dimensions: <?php echo $thumb_width . 'x' . $thumb_height; ?>
+				</div>
+			<?php endif; ?>
+			<img
+				src="<?php echo esc_url($thumb_url); ?>"
+				<?php if ($thumb_srcset): ?>
+					srcset="<?php echo esc_attr($thumb_srcset); ?>"
+					sizes="<?php echo esc_attr($thumb_sizes); ?>"
+				<?php endif; ?>
+				<?php if ($thumb_width && $thumb_height): ?>
+					width="<?php echo esc_attr($thumb_width); ?>"
+					height="<?php echo esc_attr($thumb_height); ?>"
+				<?php endif; ?>
+				alt="<?php echo esc_attr($title); ?>"
+				loading="lazy"
+			>
 		</div>
 	<?php endif; ?>
 	
