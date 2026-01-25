@@ -65,6 +65,7 @@
   <?php
   // Generate meta description
   $meta_description = '';
+  $site_tagline = get_bloginfo('description'); // Get WordPress site tagline
   
   if (is_front_page()) {
       // For front page, use active panel info
@@ -81,16 +82,14 @@
               } elseif ($panel_subtitle) {
                   $meta_description = $panel_subtitle;
               } elseif ($panel_title) {
-                  $meta_description = $panel_title . ' - Informe de movilidad en México';
-              } else {
-                  $meta_description = 'Informe de movilidad en México - Análisis y datos sobre transporte y movilidad urbana';
+                  $meta_description = $panel_title . ($site_tagline ? ' - ' . $site_tagline : '');
               }
           }
       }
       
       // Fallback if no panel
       if (empty($meta_description)) {
-          $meta_description = 'Informe de movilidad en México - Análisis y datos sobre transporte y movilidad urbana';
+          $meta_description = $site_tagline ?: '';
       }
   } elseif (is_singular('panel')) {
       // For single panel pages
@@ -100,16 +99,16 @@
       if ($panel_intro) {
           $meta_description = wp_trim_words($panel_intro, 25, '...');
       } elseif ($panel_title) {
-          $meta_description = $panel_title . ' - Informe de movilidad en México';
+          $meta_description = $panel_title . ($site_tagline ? ' - ' . $site_tagline : '');
       } else {
-          $meta_description = get_the_title() . ' - Informe de movilidad en México';
+          $meta_description = get_the_title() . ($site_tagline ? ' - ' . $site_tagline : '');
       }
   } else {
       // For other pages, use excerpt or default
       if (has_excerpt()) {
           $meta_description = wp_trim_words(get_the_excerpt(), 25, '...');
       } else {
-          $meta_description = get_bloginfo('description') ?: 'Informe de movilidad en México - Análisis y datos sobre transporte y movilidad urbana';
+          $meta_description = $site_tagline ?: '';
       }
   }
   
