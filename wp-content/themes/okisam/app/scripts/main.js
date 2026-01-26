@@ -322,37 +322,62 @@
 		// Wait for API to be ready if it's loading
 		function initPlayer() {
 			if (typeof YT !== 'undefined' && YT.Player) {
-				player = new YT.Player('player-container', {
-					videoId: videoId,
-					playerVars: {
-						'autoplay': 1,
-						'controls': 0,
-						'modestbranding': 1,
-						'rel': 0,
-						'playsinline': 1,
-						'enablejsapi': 1,
-						'origin': window.location.origin
-					},
-					events: {
-						'onStateChange': function(event) {
-							if (event.data === YT.PlayerState.PLAYING) {
-								endCheckInterval = setInterval(function() {
-									const duration = player.getDuration();
-									const currentTime = player.getCurrentTime();
-									if (duration > 0 && (duration - currentTime) <= 1) {
-										closeVideoModal();
-									}
-								}, 200);
-							} else if (event.data === YT.PlayerState.ENDED) {
-								closeVideoModal();
-							} else {
-								clearInterval(endCheckInterval);
+				try {
+					player = new YT.Player('player-container', {
+						videoId: videoId,
+						playerVars: {
+							'autoplay': 1,
+							'controls': 0,
+							'modestbranding': 1,
+							'rel': 0,
+							'playsinline': 1,
+							'enablejsapi': 1,
+							'origin': window.location.origin,
+							'iv_load_policy': 3, // Hide annotations
+							'cc_load_policy': 0 // Hide captions by default
+						},
+						events: {
+							'onReady': function(event) {
+								// Suppress postMessage errors in console (common in localhost)
+								// These are harmless cross-origin warnings
+							},
+							'onStateChange': function(event) {
+								if (event.data === YT.PlayerState.PLAYING) {
+									endCheckInterval = setInterval(function() {
+										try {
+											const duration = player.getDuration();
+											const currentTime = player.getCurrentTime();
+											if (duration > 0 && (duration - currentTime) <= 1) {
+												closeVideoModal();
+											}
+										} catch (e) {
+											// Ignore errors when checking video progress
+											clearInterval(endCheckInterval);
+										}
+									}, 200);
+								} else if (event.data === YT.PlayerState.ENDED) {
+									closeVideoModal();
+								} else {
+									clearInterval(endCheckInterval);
+								}
+							},
+							'onError': function(event) {
+								// Handle YouTube player errors gracefully
+								console.warn('YouTube player error:', event.data);
 							}
 						}
-					}
-				});
-				$modal.fadeIn(300);
-				$('body').addClass('modal-open');
+					});
+					$modal.fadeIn(300);
+					$('body').addClass('modal-open');
+				} catch (e) {
+					// If player creation fails, use fallback iframe
+					console.warn('Failed to create YouTube player, using fallback:', e);
+					const $container = $('#player-container');
+					const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
+					$container.replaceWith(`<iframe src="${embedUrl}" loading="lazy" allow="autoplay; encrypted-media" allowfullscreen></iframe>`);
+					$modal.fadeIn(300);
+					$('body').addClass('modal-open');
+				}
 			} else {
 				// Fallback if API not loaded yet - wait a bit and retry
 				if (youtubeApiLoading) {
@@ -360,7 +385,7 @@
 				} else {
 					// Fallback if API failed to load
 					const $container = $('#player-container');
-					const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`;
+					const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
 					$container.replaceWith(`<iframe src="${embedUrl}" loading="lazy" allow="autoplay; encrypted-media" allowfullscreen></iframe>`);
 					$modal.fadeIn(300);
 					$('body').addClass('modal-open');
