@@ -46,12 +46,16 @@ Organización de los campos principales usados por el CPT `panel` (Etiqueta / No
 | Día de desbloqueo Q2 | `panel_q2_unlock_day` | Selección |
 | Hora de desbloqueo Q2 | `panel_q2_unlock_time` | Selector de hora |
 | 2º Quincena | `panel_q2` | Contenido flexible |
+| Orden del Panel Histórico | `panel_order_history_mode` | Selección |
 
 ### Modos del Panel
 
 - `panel_mode` (opción WP definida en Ajustes generales de panel): controla la visibilidad global del sitio.
   - `yearly` (modo anual): solo se muestra el panel activo; el resto permanece oculto siguiendo `panel_status`.
   - `history` (modo histórico manual): se muestran todos los paneles, ignorando la ocultación por estado.
+- `panel_order_history_mode` (opción WP definida en Ajustes generales de panel): controla el orden de aparición de los paneles cuando el sitio está en modo histórico.
+  - `DESC` (Descendente): los paneles más recientes aparecen primero.
+  - `ASC` (Ascendente): los paneles más antiguos aparecen primero.
 - En Ajustes generales de panel también se define la **Fecha de activación del modo histórico** (almacenada como opción WP), usada por la lógica para entrar en histórico según calendario.
 
 

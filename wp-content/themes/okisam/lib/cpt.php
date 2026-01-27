@@ -32,6 +32,15 @@ function okisam_set_panel_mode($mode) {
     return update_field('panel_mode', $mode, 'option');
 }
 
+/**
+ * Get the panel order for history mode
+ * @return string 'ASC' or 'DESC'
+ */
+function okisam_get_panel_order_history_mode() {
+    $order = get_field('panel_order_history_mode', 'option');
+    return in_array(strtoupper($order), ['ASC', 'DESC'], true) ? strtoupper($order) : 'DESC';
+}
+
 function okisam_get_panel_history_mode_date() {
     $date_value = get_field('panel_date_history_mode', 'option');
     if (!$date_value) {
@@ -175,6 +184,7 @@ function okisam_get_all_panels() {
 
 function okisam_get_all_panels_current_year() {
     $current_year = date('Y');
+    $order = okisam_is_history_mode() ? okisam_get_panel_order_history_mode() : 'DESC';
     $args = array(
         'post_type'      => 'panel',
         'posts_per_page' => -1,
@@ -189,7 +199,7 @@ function okisam_get_all_panels_current_year() {
         ),
         'orderby'        => 'meta_value',
         'meta_key'       => 'panel_date',
-        'order'          => 'DESC'
+        'order'          => $order
     );
 
     $query = new WP_Query($args);
@@ -204,6 +214,7 @@ function okisam_get_all_panels_current_year() {
  */
 function okisam_get_panels_batch($page = 1, $per_page = 3) {
     $current_year = date('Y');
+    $order = okisam_is_history_mode() ? okisam_get_panel_order_history_mode() : 'DESC';
     $args = array(
         'post_type'      => 'panel',
         'posts_per_page' => $per_page,
@@ -219,7 +230,7 @@ function okisam_get_panels_batch($page = 1, $per_page = 3) {
         ),
         'orderby'        => 'meta_value',
         'meta_key'       => 'panel_date',
-        'order'          => 'DESC'
+        'order'          => $order
     );
 
     return new WP_Query($args);
