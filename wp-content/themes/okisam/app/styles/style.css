@@ -755,7 +755,7 @@ padding: 8px 16px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
-  grid-auto-rows: 260px; /* alto base de 1 fila */
+  grid-auto-rows: auto; /* Auto para respetar heights específicos de los módulos */
   grid-auto-flow: dense;
   margin-top: 20px;
 }
@@ -1029,12 +1029,16 @@ padding: 8px 16px;
 .module-quote.module-color-default.no-attribution,
 .module-quote.module-color-blanco.no-attribution {
   background-image: url('../images/caballo-negro.png');
-  background-position: right center;
+  background-position: right bottom;
   background-repeat: no-repeat;
   background-size: auto;
 }
 
 /* Quote - Negro: pieza-de-ajedrez.png a la derecha e invertida */
+.module-quote.module-color-negro {
+  border: none; /* Remover border para módulos con color negro */
+}
+
 .module-quote.module-color-negro::before {
   content: '';
   position: absolute;
@@ -1043,7 +1047,7 @@ padding: 8px 16px;
   width: 100%;
   height: 100%;
   background-image: url('../images/pieza-de-ajedrez.png');
-  background-position: right;
+  background-position: right bottom;
   background-repeat: no-repeat;
   background-size: auto;
   transform: scaleX(-1);
@@ -1092,18 +1096,21 @@ padding: 8px 16px;
 .modules-grid .module-size-1x1 {
   grid-column: span 1;
   grid-row: span 1;
+  height: 340px; /* Height específico para 1 fila */
 }
 
 .modules-grid .module.module-size-1x2,
 .modules-grid .module-size-1x2 {
   grid-column: span 1;
   grid-row: span 2;
+  height: 524px; /* Height específico para 2 filas */
 }
 
 .modules-grid .module.module-size-1x3,
 .modules-grid .module-size-1x3 {
   grid-column: span 1;
   grid-row: span 3;
+   /* Height específico para 3 filas */
 }
 
 /* 2 columnas - diferentes alturas */
@@ -1111,18 +1118,21 @@ padding: 8px 16px;
 .modules-grid .module-size-2x1 {
   grid-column: span 2;
   grid-row: span 1;
+  height: 340px; /* Height específico para 1 fila */
 }
 
 .modules-grid .module.module-size-2x2,
 .modules-grid .module-size-2x2 {
   grid-column: span 2;
   grid-row: span 2;
+  height: 524px; /* Height específico para 2 filas */
 }
 
 .modules-grid .module.module-size-2x3,
 .modules-grid .module-size-2x3 {
   grid-column: span 2;
   grid-row: span 3;
+   /* Height específico para 3 filas */
 }
 
 /* 3 columnas (full width) - diferentes alturas */
@@ -1130,18 +1140,21 @@ padding: 8px 16px;
 .modules-grid .module-size-3x1 {
   grid-column: span 3;
   grid-row: span 1;
+  height: 340px; /* Height específico para 1 fila */
 }
 
 .modules-grid .module.module-size-3x2,
 .modules-grid .module-size-3x2 {
   grid-column: span 3;
   grid-row: span 2;
+  height: 524px; /* Height específico para 2 filas */
 }
 
 .modules-grid .module.module-size-3x3,
 .modules-grid .module-size-3x3 {
   grid-column: span 3;
   grid-row: span 3;
+   /* Height específico para 3 filas */
 }
 
 /* Compatibilidad hacia atrás con clases antiguas (deprecated) */
@@ -1195,12 +1208,16 @@ padding: 8px 16px;
 .module-quote.module-color-default.no-attribution,
 .module-quote.module-color-blanco.no-attribution {
   background-image: url('../images/caballo-negro.png');
-  background-position: right center;
+  background-position: right bottom;
   background-repeat: no-repeat;
   background-size: auto;
 }
 
 /* Quote - Negro: pieza-de-ajedrez.png a la derecha e invertida */
+.module-quote.module-color-negro {
+  border: none; /* Remover border para módulos con color negro */
+}
+
 .module-quote.module-color-negro::before {
   content: '';
   position: absolute;
@@ -1209,7 +1226,7 @@ padding: 8px 16px;
   width: 100%;
   height: 100%;
   background-image: url('../images/pieza-de-ajedrez.png');
-  background-position: left;
+  background-position: left bottom;
   background-repeat: no-repeat;
   background-size: auto;
   transform: scaleX(-1);
@@ -1302,7 +1319,7 @@ padding: 8px 16px;
 /* Dato cualitativo - Negro: pieza-de-ajedrez.png a la izquierda */
 .module-dato-cualitativo.module-color-negro {
   background-image: url('../images/pieza-de-ajedrez.png');
-  background-position: left center;
+  background-position: left bottom;
   background-repeat: no-repeat;
   background-size: auto;
 }
@@ -1317,7 +1334,7 @@ padding: 8px 16px;
   width: 100%;
   height: 100%;
   background-image: url('../images/caballo-negro.png');
-  background-position: right;
+  background-position: right bottom;
   background-repeat: no-repeat;
   background-size: auto;
   transform: scaleX(-1);
@@ -1578,7 +1595,7 @@ padding: 8px 16px;
 .module.module-color-negro,
 .module-color-negro {
   background-color: var(--neutral-95) !important;
-  border: 2px solid var(--neutral-95) !important;
+  border: none !important; /* Remover border de todos los módulos con color negro */
 }
 
 /* Compatibilidad con valores antiguos (deprecated) */
